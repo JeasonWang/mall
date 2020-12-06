@@ -41,3 +41,8 @@ logging:
 logstash:
   host: localhost
 
+wx:
+  getCode: "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=STAT#wechat_redirect"
+  webAccessTokenhttps: "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code"
+  appId: wx11f6a91c7bef5a8a
+  secret: c415b4168e2945011d98aad1930c534c
