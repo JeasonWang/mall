@@ -29,7 +29,6 @@
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "TPshop",
-    "navigationBarTitleText": "TP商城",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": true
   },
@@ -51,11 +50,6 @@
         "selectedIconPath": "static/images/ic_menu_sort_pressed.png",
         "text": "分类"
       },
-
-     
-
-     
-
       {
         "pagePath": "pages/cart/cart",
         "iconPath": "static/images/ic_menu_shoping_nor.png",

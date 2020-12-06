@@ -1,5 +1,6 @@
 //var NewApiRootUrl = 'https://shop.51shop.ink/demo/api/';
 //var MallApiRootUrl = 'http://81.70.0.224:8085/';
+//var MallApiRootUrl = 'http://39.105.6.8:8085/';
 var MallApiRootUrl = 'http://127.0.0.1:8085/';
 var SearchApiRootUrl = 'http://127.0.0.1:8081/';
 module.exports = {
