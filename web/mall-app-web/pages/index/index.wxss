@@ -666,6 +666,10 @@ a-section .cont{
   font-size: 40rpx;
   color: #333;
 }
+.logo {
+  width: 300rpx;
+  height: 80rpx;
+}
 
 .loadmore text {
   color: #999;

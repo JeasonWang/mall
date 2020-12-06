@@ -13,6 +13,14 @@ Page({
     topics3: {},
     skill: [],
     newProductList: [],
+    brandList: [],
+    homeFlashPromotion: {
+      endTime:undefined,
+      nextEndTime:undefined,
+      startTime:undefined,
+      nextStartTime:undefined,
+      productList: []
+    },
     group: [],
     brands: [],
     floorGoods: [],
@@ -54,6 +62,8 @@ Page({
       if (res.code === 200) {
         data.banner = res.data.advertiseList
         data.newProductList = res.data.newProductList;
+        data.brandList = res.data.brandList;
+        data.homeFlashPromotion - res.data.homeFlashPromotion;
         that.setData(data);
       }
     });

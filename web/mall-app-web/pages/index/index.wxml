@@ -46,7 +46,35 @@
 			</view>
 		</view>
 	</view>
-	<view>
-		<text class="title1">秒杀专区</text>
+	<view class="a-section a-new">
+		<text class="title1">秒杀专场</text>
+		<view class="b" wx:if="{{homeFlashPromotion.productList.length > 0}}">
+			<view class="item" wx:for="{{newProductList}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
+				<navigator url="../goods/goods?id={{item.id}}">
+					<image class="img" src="{{item.pic}}" background-size="cover"></image>
+					<text class="name">{{item.name || ''}}</text>
+					<view class="tx price">
+						<text class='pri dzprice'>现价：￥{{item.price || '0.00'}}</text>
+					</view>
+					<text class="price">原价：￥{{item.originalPrice}}</text>
+				</navigator>
+			</view>
+		</view>
+	</view>
+	<view class="a-section a-new" wx:if="{{brandList.length > 0}}">
+		<text class="title1">推荐品牌</text>
+		<view class="b">
+			<view class="item" wx:for="{{brandList}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
+				<navigator url="../goods/goods?id={{item.id}}">
+					<image class="img" src="{{item.bigPic}}" background-size="cover"></image>
+					<image class="logo" src="{{item.logo}}"></image>
+					<text class="name">{{item.name || ''}}</text>
+					<view class="tx price">
+						<text class='pri dzprice'>现价：￥{{item.price || '0.00'}}</text>
+					</view>
+					<text class="price">原价：￥{{item.originalPrice}}</text>
+				</navigator>
+			</view>
+		</view>
 	</view>
 </view>
