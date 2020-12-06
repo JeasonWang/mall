@@ -11,10 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +49,7 @@ public class WXController {
      * 登录
      */
     @ApiOperation(value = "登录")
-    @PostMapping("login_by_weixin")
+    @PostMapping("/login_by_weixin")
     public CommonResult loginByWeixin(@RequestBody LoginInfo loginInfo, HttpServletRequest request) {
         //获取openid
         String requestUrl = String.format(this.webAccessTokenhttps,
@@ -67,7 +64,7 @@ public class WXController {
             return CommonResult.failed("登录失败");
         }
 
-        String token = memberService.login("test", "test123");//(openid, openid);
+        String token = memberService.login(loginInfo.getNickName(), "test123");
         if (token == null) {
             String tel = String.valueOf(System.currentTimeMillis());
             memberService.register(openid, openid, tel, loginInfo.getNickName());
@@ -81,6 +78,16 @@ public class WXController {
         tokenMap.put("userid", "1");
 
         return CommonResult.success(tokenMap);
+    }
+
+    /**
+     * 退出登录
+     */
+    @ApiOperation(value = "退出登录")
+    @GetMapping("/logout_by_weixin")
+    public CommonResult logoutByWeixin(String username) {
+        memberService.logout(username);
+        return CommonResult.success("退出登录");
     }
 }
 

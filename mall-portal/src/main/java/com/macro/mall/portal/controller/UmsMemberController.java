@@ -59,6 +59,14 @@ public class UmsMemberController {
         return CommonResult.success(tokenMap);
     }
 
+    @ApiOperation("会员退出登录")
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult logout(@RequestParam String username) {
+        memberService.logout(username);
+        return CommonResult.success("会员退出登录");
+    }
+
     @ApiOperation("获取会员信息")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     @ResponseBody

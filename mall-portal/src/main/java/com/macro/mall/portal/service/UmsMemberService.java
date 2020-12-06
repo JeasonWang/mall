@@ -1,6 +1,7 @@
 package com.macro.mall.portal.service;
 
 import com.macro.mall.model.UmsMember;
+import com.macro.mall.portal.domain.MemberDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +51,7 @@ public interface UmsMemberService {
     /**
      * 获取用户信息
      */
-    UserDetails loadUserByUsername(String username);
+    MemberDetails loadUserByUsername(String username);
 
     /**
      * 登录后获取token
@@ -61,4 +62,10 @@ public interface UmsMemberService {
      * 刷新token
      */
     String refreshToken(String token);
+
+    /**
+     * 退出登录
+     * @param username
+     */
+    void logout(String username);
 }

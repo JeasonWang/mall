@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,7 +58,9 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     @Override
     public UmsMember getByUsername(String username) {
         UmsMember member = memberCacheService.getMember(username);
-        if(member!=null) return member;
+        if(member!=null) {
+            return member;
+        }
         UmsMemberExample example = new UmsMemberExample();
         example.createCriteria().andUsernameEqualTo(username);
         List<UmsMember> memberList = memberMapper.selectByExample(example);
@@ -153,7 +156,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
+    public MemberDetails loadUserByUsername(String username) {
         UmsMember member = getByUsername(username);
         if(member!=null){
             return new MemberDetails(member);
@@ -182,6 +185,14 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     @Override
     public String refreshToken(String token) {
         return jwtTokenUtil.refreshHeadToken(token);
+    }
+
+    @Override
+    public void logout(String username) {
+        MemberDetails userDetails = loadUserByUsername(username);
+        if (userDetails != null){
+            memberCacheService.delMember(userDetails.getUmsMember().getId());
+        }
     }
 
     //对输入的验证码进行校验

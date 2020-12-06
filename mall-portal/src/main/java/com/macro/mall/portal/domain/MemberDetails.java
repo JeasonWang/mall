@@ -19,6 +19,10 @@ public class MemberDetails implements UserDetails {
         this.umsMember = umsMember;
     }
 
+    public void setUmsMember(UmsMember umsMember) {
+        this.umsMember = umsMember;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //返回当前用户的权限
