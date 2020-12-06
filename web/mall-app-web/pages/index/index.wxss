@@ -659,6 +659,13 @@ a-section .cont{
   text-align: center;
   margin-top: 0rpx;
 }
+.title1 {
+  height: 35rpx;
+  margin-left: 20rpx;
+  margin-bottom: 14rpx;
+  font-size: 40rpx;
+  color: #333;
+}
 
 .loadmore text {
   color: #999;

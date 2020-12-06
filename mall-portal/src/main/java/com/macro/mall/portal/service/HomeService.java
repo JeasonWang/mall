@@ -20,6 +20,9 @@ public interface HomeService {
 
     /**
      * 首页商品推荐
+     * @param pageSize
+     * @param pageNum
+     * @return
      */
     List<PmsProduct> recommendProductList(Integer pageSize, Integer pageNum);
 

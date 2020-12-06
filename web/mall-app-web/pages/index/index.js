@@ -12,6 +12,7 @@ Page({
     topics2: {},
     topics3: {},
     skill: [],
+    newProductList: [],
     group: [],
     brands: [],
     floorGoods: [],
@@ -22,8 +23,6 @@ Page({
   onShareAppMessage: function () {
     // 小程序分享
     return {
-      title: 'TPShop',
-      desc: 'TP商城',
       title: 'TPShop',
       desc: 'TP商城',
       path: '/pages/index/index'
@@ -54,6 +53,7 @@ Page({
       console.log(res);
       if (res.code === 200) {
         data.banner = res.data.advertiseList
+        data.newProductList = res.data.newProductList;
         that.setData(data);
       }
     });

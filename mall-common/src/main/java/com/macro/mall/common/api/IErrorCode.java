@@ -5,7 +5,15 @@ package com.macro.mall.common.api;
  * Created by macro on 2019/4/19.
  */
 public interface IErrorCode {
+    /**
+     * 状态码
+     * @return
+     */
     long getCode();
 
+    /**
+     * 消息
+     * @return
+     */
     String getMessage();
 }
