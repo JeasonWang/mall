@@ -26,3 +26,9 @@ logging:
 
 logstash:
   host: localhost
+
+qiniu:
+  accessKey: MGS_vEoF1UkrGH0N3JILUokTedZ8TAtAukCGTFdI
+  secretKey: sx60d2BVyWwAJHXJbIGwIyC9E2HOOmFDql7gylcr
+  bucket: jeasonfile
+  path: https://img.jeason.com
