@@ -63,7 +63,7 @@ Page({
         data.banner = res.data.advertiseList
         data.newProductList = res.data.newProductList;
         data.brandList = res.data.brandList;
-        data.homeFlashPromotion - res.data.homeFlashPromotion;
+        data.homeFlashPromotion = res.data.homeFlashPromotion;
         that.setData(data);
       }
     });
