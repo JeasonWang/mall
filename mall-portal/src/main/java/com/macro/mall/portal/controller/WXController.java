@@ -5,12 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.portal.domain.LoginInfo;
+import com.macro.mall.portal.domain.MemberDetails;
 import com.macro.mall.portal.service.UmsMemberService;
 import com.mysql.cj.util.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -64,18 +66,17 @@ public class WXController {
             return CommonResult.failed("登录失败");
         }
 
-        String token = memberService.login(loginInfo.getNickName(), "test123");
+        String token = memberService.login(openid, openid);
         if (token == null) {
-            String tel = String.valueOf(System.currentTimeMillis());
-            memberService.register(openid, openid, tel, loginInfo.getNickName());
-            token = memberService.login(loginInfo.getNickName(), openid);
+            memberService.registerByWx(openid, openid, loginInfo.getNickName());
+            token = memberService.login(openid, openid);
         }
 
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
         tokenMap.put("tokenHead", tokenHead);
         tokenMap.put("openid", openid);
-        tokenMap.put("userid", "1");
+        tokenMap.put("userId", memberService.getCurrentMember().getId().toString());
 
         return CommonResult.success(tokenMap);
     }
@@ -85,8 +86,8 @@ public class WXController {
      */
     @ApiOperation(value = "退出登录")
     @GetMapping("/logout_by_weixin")
-    public CommonResult logoutByWeixin(String username) {
-        memberService.logout(username);
+    public CommonResult logoutByWeixin(String openid) {
+        memberService.logout(openid);
         return CommonResult.success("退出登录");
     }
 }

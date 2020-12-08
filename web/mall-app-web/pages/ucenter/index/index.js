@@ -123,7 +123,7 @@ Page({
       confirmColor: '#b4282d',
       content: '退出登录？',
       success: function (res) {
-        console.log("------:", res)
+        console.log("--退出登录----:", res)
         if (res.confirm) {
           wx.removeStorageSync('token');
           wx.removeStorageSync('userInfo');
@@ -132,6 +132,7 @@ Page({
           that.setData({
             userInfo: {},
           });
+          user.logoutByWeixin();
           wx.switchTab({
             url: '/pages/index/index'
           });

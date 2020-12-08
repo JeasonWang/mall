@@ -1,6 +1,7 @@
 package com.macro.mall.portal.service;
 
 import com.macro.mall.model.UmsMember;
+import com.macro.mall.portal.domain.LoginInfo;
 import com.macro.mall.portal.domain.MemberDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,12 @@ public interface UmsMemberService {
      */
     @Transactional
     void register(String username, String password, String telephone, String authCode);
+
+    /**
+     * 小程序用户注册
+     */
+    @Transactional
+    void registerByWx(String username, String password, String nickName);
 
     /**
      * 生成验证码

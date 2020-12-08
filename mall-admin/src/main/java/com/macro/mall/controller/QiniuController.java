@@ -3,7 +3,7 @@ package com.macro.mall.controller;
 
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.common.util.IdUtils;
-import com.macro.mall.common.util.QiniuUtil;
+import com.macro.mall.util.QiniuUtil;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

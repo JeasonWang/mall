@@ -1,4 +1,4 @@
-package com.macro.mall.common.util;
+package com.macro.mall.util;
 
 import com.alibaba.fastjson.JSON;
 import com.qiniu.common.QiniuException;

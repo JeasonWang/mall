@@ -16,7 +16,9 @@ module.exports = {
   //GoodsCategory: NewApiRootUrl + 'goods/category',  //获得具体分类数据
 
   //微信登录
-  AuthLoginByWeixin: MallApiRootUrl + 'wx/login_by_weixin', //微信登录
+  AuthLoginByWeixin: MallApiRootUrl + 'wx/login_by_weixin',
+  //微信退出
+  AuthLogoutByWeixin: MallApiRootUrl + 'wx/logout_by_weixin',
 
   //商品信息详情页
   GoodsDetail: MallApiRootUrl + 'product/detail/', //获得商品的详情

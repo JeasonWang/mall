@@ -10,7 +10,7 @@ const api = require('../config/api.js');
  * 调用微信登录
  */
 function loginByWeixin(userInfo) {
-  console.log("-----1----")
+  console.log("-----loginByWeixin----")
   console.log(userInfo.userInfo) 
   let code = null;
   return new Promise(function (resolve, reject) {
@@ -38,6 +38,7 @@ function loginByWeixin(userInfo) {
           wx.setStorageSync('userInfo', userInfo);
           // wx.setStorageSync('token', res.data.userVo.weixin_openid);
           wx.setStorageSync('token', res.data.openid);
+          wx.setStorageSync('openid', res.data.openid);
           wx.setStorageSync('isReal', true); 
           wx.setStorageSync('uId', res.data.userid); 
           wx.setStorageSync('Authorization', res.data.tokenHead + res.data.token)
@@ -61,6 +62,21 @@ function loginByWeixin(userInfo) {
 }
 
 /**
+ * 调用微信退出
+ */
+function logoutByWeixin() {
+  console.log('-----logoutByWeixin-----------');
+  let openid = wx.getStorageSync('openid', res.data.openid);
+  util.request(api.logoutByWeixin + '/openid=' + openid).then(function (res) {
+    if (res.code === 200) {
+      console.log('-----微信退出成功------');
+    }else{
+      console.log('-----微信退出异常------');
+    }
+  });
+}
+
+/**
  * 判断用户是否登录
  */
 function checkLogin() {
@@ -72,7 +88,6 @@ function checkLogin() {
       }).catch(() => {
         reject(false);
       });
-
     } else {
       reject(false);
     }
@@ -82,6 +97,7 @@ function checkLogin() {
 
 module.exports = {
   loginByWeixin,
+  logoutByWeixin,
   checkLogin,
 };
 
