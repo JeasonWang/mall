@@ -128,8 +128,8 @@
         <el-card shadow="never" class="cardBg">
           <div v-for="(item,index) in selectProductAttrPics">
             <span>{{item.name}}:</span>
-            <single-upload v-model="item.pic"
-                           style="width: 300px;display: inline-block;margin-left: 10px"></single-upload>
+            <qiniu-single-upload v-model="item.pic"
+                           style="width: 300px;display: inline-block;margin-left: 10px"></qiniu-single-upload>
           </div>
         </el-card>
       </el-form-item>
@@ -150,7 +150,8 @@
         </el-card>
       </el-form-item>
       <el-form-item label="商品相册：">
-        <multi-upload v-model="selectProductPics"></multi-upload>
+        <!-- <multi-upload v-model="selectProductPics"></multi-upload> -->
+        <qiniu-multi-upload v-model="selectProductPics"></qiniu-multi-upload>
       </el-form-item>
       <el-form-item label="规格参数：">
         <el-tabs v-model="activeHtmlName" type="card">
@@ -174,13 +175,15 @@
   import {fetchList as fetchProductAttrCateList} from '@/api/productAttrCate'
   import {fetchList as fetchProductAttrList} from '@/api/productAttr'
   import SingleUpload from '@/components/Upload/singleUpload'
-  import MultiUpload from '@/components/Upload/multiUpload'
+  import QiniuSingleUpload from '@/components/Upload/qiniuSingleUpload'
+  import MultiUpload from '@/components/Upload/MultiUpload'
+  import QiniuMultiUpload from '@/components/Upload/qiniuMultiUpload'
   import Tinymce from '@/components/Tinymce'
   import { getToken } from '@/utils/auth' // 验权
 
   export default {
     name: "ProductAttrDetail",
-    components: {SingleUpload, MultiUpload, Tinymce},
+    components: {SingleUpload, QiniuSingleUpload, MultiUpload, QiniuMultiUpload, Tinymce},
     props: {
       value: Object,
       isEdit: {
@@ -276,11 +279,9 @@
     methods: {
       uploadHanlder(index){
         this.rowIndex=index;
-        console.log(index);
       },
+
       handleGoodsImgSuccess(response, file, fileList){
-        console("--------------------");
-        console.log(response.data+"====");
         this.value.skuStockList[this.rowIndex].pic=response.data
       },
       handleEditCreated() {
@@ -663,5 +664,10 @@
 
   .cardBg {
     background: #F8F9FC;
+  }
+  .avatar {
+    width: 58px;
+    height: 58px;
+    display: block;
   }
 </style>
