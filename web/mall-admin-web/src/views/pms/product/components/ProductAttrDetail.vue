@@ -79,6 +79,24 @@
             </template>
           </el-table-column>
           <el-table-column
+            label="图片img"
+            align="center">
+            <template slot-scope="scope">
+              <span @click="uploadHanlder(scope.$index)">
+               <el-upload
+                  class="avatar-uploader"
+                  :action="upload.url"
+                  accept="image/jpeg,image/gif,image/png"
+                  :headers="upload.headers"
+                  :show-file-list="false"
+                  :on-success="handleGoodsImgSuccess">
+                  <img v-if="scope.row.pic" :src="scope.row.pic" class="avatar">
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+               </el-upload>
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column
             label="操作"
             width="80"
             align="center">
@@ -158,6 +176,7 @@
   import SingleUpload from '@/components/Upload/singleUpload'
   import MultiUpload from '@/components/Upload/multiUpload'
   import Tinymce from '@/components/Tinymce'
+  import { getToken } from '@/utils/auth' // 验权
 
   export default {
     name: "ProductAttrDetail",
@@ -171,6 +190,13 @@
     },
     data() {
       return {
+        // 上传文件参数
+        upload: {
+            // 设置上传的请求头部
+            headers: { Authorization: "Bearer " + getToken() },
+            // 上传的地址
+            url: "http://localhost:8080/qiniuyun/img/upload"
+        },
         //编辑模式时是否初始化成功
         hasEditCreated:false,
         //商品属性分类下拉选项
@@ -184,7 +210,8 @@
         //可手动添加的商品属性
         addProductAttrValue: '',
         //商品富文本详情激活类型
-        activeHtmlName: 'pc'
+        activeHtmlName: 'pc',
+        rowIndex:undefined
       }
     },
     computed: {
@@ -247,6 +274,15 @@
       }
     },
     methods: {
+      uploadHanlder(index){
+        this.rowIndex=index;
+        console.log(index);
+      },
+      handleGoodsImgSuccess(response, file, fileList){
+        console("--------------------");
+        console.log(response.data+"====");
+        this.value.skuStockList[this.rowIndex].pic=response.data
+      },
       handleEditCreated() {
         //根据商品属性分类id获取属性和参数
         if(this.value.productAttributeCategoryId!=null){

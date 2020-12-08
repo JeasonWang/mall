@@ -46,6 +46,7 @@ secure:
       - /admin/info
       - /admin/logout
       - /minio/upload
+      - /qiniuyun/img/upload
 
 aliyun:
   oss:

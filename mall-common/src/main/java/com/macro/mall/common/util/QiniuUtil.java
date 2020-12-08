@@ -40,11 +40,10 @@ public class QiniuUtil {
      */
     public  String uploadImg(FileInputStream file, String key) {
         //构造一个带指定Zone对象的配置类
-        Configuration cfg = new Configuration(Zone.zone0());
-//...其他参数参考类注释
+        Configuration cfg = new Configuration(Zone.zone2());
+        //...其他参数参考类注释
         UploadManager uploadManager = new UploadManager(cfg);
-//...生成上传凭证，然后准备上传
-//        String bucket = "oy09glbzm.bkt.clouddn.com";
+        //...生成上传凭证，然后准备上传
         //默认不指定key的情况下，以文件内容的hash值作为文件名
         try {
             Auth auth = Auth.create(accessKey, secretKey);
@@ -53,9 +52,7 @@ public class QiniuUtil {
                 Response response = uploadManager.put(file, key, upToken, null, null);
                 //解析上传成功的结果
                 DefaultPutRet putRet = JSON.parseObject(response.bodyString(), DefaultPutRet.class);
-//                DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-//                System.out.println(putRet.key);
-//                System.out.println(putRet.hash);
+
                 String return_path = path+"/"+putRet.key;
                 logger.info("保存地址={}",return_path);
                 return return_path;
@@ -65,7 +62,7 @@ public class QiniuUtil {
                 try {
                     System.err.println(r.bodyString());
                 } catch (QiniuException ex2) {
-                    //ignore
+                    ex2.printStackTrace();
                 }
             }
         } catch (Exception e) {

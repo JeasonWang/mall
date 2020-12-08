@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 @Controller
 @Api(tags = "QiniuController", description = "Qiniu管理")
-@RequestMapping("/qiniuyun/qiniu")
+@RequestMapping("/qiniuyun")
 public class QiniuController {
     @Resource
     private QiniuUtil qiniuUtil;
@@ -36,7 +36,7 @@ public class QiniuController {
     public CommonResult uploadImgQiniu(@RequestParam("file") MultipartFile multipartFile) throws IOException {
         FileInputStream inputStream = (FileInputStream) multipartFile.getInputStream();
         String url = qiniuUtil.uploadImg(inputStream, String.valueOf(IdUtils.snowflakeId()));
-        return CommonResult.success("上传成功",url);
+        return CommonResult.success(url,"上传成功");
     }
 
 }

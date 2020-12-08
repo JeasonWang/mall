@@ -31,4 +31,4 @@ qiniu:
   accessKey: MGS_vEoF1UkrGH0N3JILUokTedZ8TAtAukCGTFdI
   secretKey: sx60d2BVyWwAJHXJbIGwIyC9E2HOOmFDql7gylcr
   bucket: jeasonfile
-  path: https://qk21l8imj.hn-bkt.clouddn.com
+  path: http://qk21l8imj.hn-bkt.clouddn.com
