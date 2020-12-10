@@ -11,5 +11,5 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 @Configuration
 public class RedisConfig extends BaseRedisConfig {
-
+    public static final String MALL_PORTAL_CACHE_KEY="mall_portal:";
 }

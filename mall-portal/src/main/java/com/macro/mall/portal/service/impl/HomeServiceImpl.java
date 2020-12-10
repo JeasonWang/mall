@@ -9,6 +9,7 @@ import com.macro.mall.portal.domain.HomeContentResult;
 import com.macro.mall.portal.domain.HomeFlashPromotion;
 import com.macro.mall.portal.service.HomeService;
 import com.macro.mall.portal.util.DateUtil;
+import com.macro.mall.security.config.RedisConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class HomeServiceImpl implements HomeService {
     private CmsSubjectMapper subjectMapper;
 
     @Override
+    //@Cacheable(value = RedisConfig.MALL_PORTAL_CACHE_KEY+"content")
     public HomeContentResult content() {
         HomeContentResult result = new HomeContentResult();
         //获取首页广告
@@ -57,6 +59,7 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
+    @Cacheable(value = RedisConfig.MALL_PORTAL_CACHE_KEY+"recommendProductList",unless = "#result == null || #result.size() < 1")
     public List<PmsProduct> recommendProductList(Integer pageSize, Integer pageNum) {
         // TODO: 2019/1/29 暂时默认推荐所有商品
         PageHelper.startPage(pageNum,pageSize);
@@ -68,6 +71,7 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
+    @Cacheable(value = RedisConfig.MALL_PORTAL_CACHE_KEY+"getProductCateList",unless = "#result == null || #result.size() < 1")
     public List<PmsProductCategory> getProductCateList(Long parentId) {
         PmsProductCategoryExample example = new PmsProductCategoryExample();
         example.createCriteria()
@@ -78,6 +82,7 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
+    @Cacheable(value = RedisConfig.MALL_PORTAL_CACHE_KEY+"getSubjectList",unless = "#result == null || #result.size() < 1")
     public List<CmsSubject> getSubjectList(Long cateId, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum,pageSize);
         CmsSubjectExample example = new CmsSubjectExample();
@@ -90,19 +95,21 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
-    @Cacheable(value = "mall-port")
+    @Cacheable(value = RedisConfig.MALL_PORTAL_CACHE_KEY+"hotProductList",unless = "#result == null || #result.size() < 1")
     public List<PmsProduct> hotProductList(Integer pageNum, Integer pageSize) {
         int offset = pageSize * (pageNum - 1);
         return homeDao.getHotProductList(offset, pageSize);
     }
 
     @Override
+    @Cacheable(value = RedisConfig.MALL_PORTAL_CACHE_KEY+"newProductList",unless = "#result == null || #result.size() < 1")
     public List<PmsProduct> newProductList(Integer pageNum, Integer pageSize) {
         int offset = pageSize * (pageNum - 1);
         return homeDao.getNewProductList(offset, pageSize);
     }
 
     @Override
+    @Cacheable(value = RedisConfig.MALL_PORTAL_CACHE_KEY+"count",unless = "#result != null")
     public int count() {
         return productMapper.getGoodsCount();
     }

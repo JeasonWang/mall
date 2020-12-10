@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.macro.mall.common.service.RedisService;
 import com.macro.mall.common.service.impl.RedisServiceImpl;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -23,7 +24,7 @@ import java.time.Duration;
  * Redis基础配置
  * Created by macro on 2020/6/19.
  */
-public class BaseRedisConfig {
+public class BaseRedisConfig extends CachingConfigurerSupport {
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
@@ -53,9 +54,9 @@ public class BaseRedisConfig {
     @Bean
     public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
-        //设置Redis缓存有效期为1h
+        //设置Redis缓存有效期为1天
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer())).entryTtl(Duration.ofHours(1));
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer())).entryTtl(Duration.ofMinutes(3));
         return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
     }
 
