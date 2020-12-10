@@ -15,9 +15,10 @@
 							<label class="lael">{{type==1?'团购':'秒杀'}}</label>
 						</view> 
 					</view>
-					<image class="prourl" src="{{item.list_pic_url}}"></image>
+					<image class="prourl" src="{{item.pic}}"></image>
 					<view class="pricebox">
-						<text class="xprice">¥{{type==1?item.group_price:item.retail_price}}</text>
+						<text class="xprice">¥{{type==1?item.originalPrice:item.price}}</text>
+						<text class='pri yjprice' wx:if="{{item.originalPrice && type==2}}">￥{{item.originalPrice}}</text>
 						<text class="pprice" wx:if="{{type==1}}">拼</text>
 					</view>
 				</view>

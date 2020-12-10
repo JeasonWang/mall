@@ -7,6 +7,11 @@
 		width: 94%;
 		margin: 0 auto;
 	}
+	.yjprice{
+		margin-left: 30rpx;
+		text-decoration: line-through; 
+		color: #999;
+	}
 	.recom-section .h{
 		flex: 1;
 		height: 100rpx; 

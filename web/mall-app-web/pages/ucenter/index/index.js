@@ -128,11 +128,13 @@ Page({
           wx.removeStorageSync('token');
           wx.removeStorageSync('userInfo');
           wx.removeStorageSync('userId');
-          app.globalData.userInfo = {}
+          var openid = wx.getStorageSync('openid');
+          console.log('openid:'+openid);
+          app.globalData.userInfo = {};
           that.setData({
             userInfo: {},
           });
-          user.logoutByWeixin();
+          user.logoutByWeixin(openid);
           wx.switchTab({
             url: '/pages/index/index'
           });

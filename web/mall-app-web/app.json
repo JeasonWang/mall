@@ -8,6 +8,7 @@
     "pages/ucenter/return/return",
     "pages/ucenter/orderDetail/orderDetail",
     "pages/ucenter/feedback/feedback",
+    "pages/topic/topic",
     "pages/auth/login/login",
     "pages/auth/register/register",
     "pages/auth/reset/reset",
@@ -49,6 +50,12 @@
         "iconPath": "static/images/ic_menu_sort_nor.png",
         "selectedIconPath": "static/images/ic_menu_sort_pressed.png",
         "text": "分类"
+      },
+      {
+        "pagePath": "pages/topic/topic",
+        "iconPath": "static/images/ic_menu_topic_nor.png",
+        "selectedIconPath": "static/images/ic_menu_topic_pressed.png",
+        "text": "专题"
       },
       {
         "pagePath": "pages/cart/cart",

@@ -10,11 +10,11 @@ const api = require('../config/api.js');
  * 调用微信登录
  */
 function loginByWeixin(userInfo) {
-  console.log("-----loginByWeixin----")
-  console.log(userInfo.userInfo) 
+  console.log("-----loginByWeixin----");
   let code = null;
   return new Promise(function (resolve, reject) {
     return util.login().then((res) => {
+      console.log("res:",res);
       code = res.code; 
       return userInfo;
     }).then((userInfo) => {
@@ -30,23 +30,20 @@ function loginByWeixin(userInfo) {
       params.province = userInfo.userInfo.province;
       params.promoterId = wx.getStorageSync('userId') || 0;
       params.merchantId = wx.getStorageSync('merchantId') || 0;
-      console.log('-----********---------', JSON.stringify(params))
+      console.log('-----params---------', JSON.stringify(params))
       util.request(api.AuthLoginByWeixin, params, 'POST').then(res => {
-        console.log('-----********---------', JSON.stringify(res))
+        console.log('-----res---------', JSON.stringify(res))
         if (res.code === 200) { 
           //存储用户信息
+          console.log("存储用户信息");
           wx.setStorageSync('userInfo', userInfo);
           // wx.setStorageSync('token', res.data.userVo.weixin_openid);
           wx.setStorageSync('token', res.data.openid);
           wx.setStorageSync('openid', res.data.openid);
           wx.setStorageSync('isReal', true); 
-          wx.setStorageSync('uId', res.data.userid); 
+          wx.setStorageSync('uId', res.data.userId); 
           wx.setStorageSync('Authorization', res.data.tokenHead + res.data.token)
-          console.log('-----#######---------', res.data.userid)
-          if (wx.getStorageSync('userId')){
-            wx.removeStorageSync('userId'); 
-            // wx.setStorageSync('userId');
-          }  
+          wx.setStorageSync('userId',res.data.userId);
           resolve(res);
         } else {
           util.showErrorToast(res.message)
@@ -64,10 +61,9 @@ function loginByWeixin(userInfo) {
 /**
  * 调用微信退出
  */
-function logoutByWeixin() {
+function logoutByWeixin(openid) {
   console.log('-----logoutByWeixin-----------');
-  let openid = wx.getStorageSync('openid', res.data.openid);
-  util.request(api.logoutByWeixin + '/openid=' + openid).then(function (res) {
+  util.request(api.AuthLogoutByWeixin + '?openid=' + openid).then(function (res) {
     if (res.code === 200) {
       console.log('-----微信退出成功------');
     }else{

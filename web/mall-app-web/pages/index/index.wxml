@@ -14,79 +14,76 @@
 			</navigator>
 		</swiper-item>
 	</swiper>
-	<view class="a-section a-new" wx:if="{{homeFlashPromotion.productList.length > 0}}">
-		<view>
-			<text class="title1">秒杀专场</text>
-		</view>
-		<view>
-			<text>开始时间：{{filter.format(homeFlashPromotion.startTime, 'YY-MM-DD')}} - {{filter.format(homeFlashPromotion.endTime, 'YY-MM-DD')}}</text>
-		</view>
-		<view class="b">
-			<view class="item" wx:for="{{homeFlashPromotion.productList}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
-				<navigator url="../goods/goods?id={{item.id}}">
-					<image class="img" src="{{item.pic}}" background-size="cover"></image>
-					<text class="name">{{item.name || ''}}</text>
-					<view class="tx price">
-						<text class='pri dzprice'>现价：￥{{item.price || '0.00'}}</text>
-					</view>
-					<text class="price">原价：￥{{item.originalPrice}}</text>
-				</navigator>
-			</view>
-		</view>
-	</view>
-	<view class="a-section a-new" wx:if="{{hotGoods.length > 0}}">
-		<view>
-			<text class="title1">人气推荐</text>
-		</view>
-		<view class="b">
-			<view class="item" wx:for="{{hotGoods}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
-				<navigator url="../goods/goods?id={{item.id}}">
-					<image class="img" src="{{item.pic}}" background-size="cover"></image>
-					<text class="name">{{item.name || ''}}</text>
-					<view class="tx price">
-						<text class='pri dzprice'>现价：￥{{item.price || '0.00'}}</text>
-					</view>
-					<text class="price">原价：￥{{item.originalPrice}}</text>
-				</navigator>
-			</view>
-		</view>
-	</view>
+
+	<view class='spike'><index-type-data name="秒杀" data="{{homeFlashPromotion.productList}}" type="2"></index-type-data></view> 
+	
 	<view class="a-section a-new" wx:if="{{newProductList.length > 0}}">
-		<view>
-			<text class="title1">新品特卖</text>
-		</view>
-		<view class="b">
-			<view class="item" wx:for="{{newProductList}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
-				<navigator url="../goods/goods?id={{item.id}}">
-					<image class="img" src="{{item.pic}}" background-size="cover"></image>
-					<text class="name">{{item.name || ''}}</text>
-					<view class="tx price">
-						<text class='pri dzprice'>现价：￥{{item.price || '0.00'}}</text>
-					</view>
-					<text class="price">原价：￥{{item.originalPrice}}</text>
-				</navigator>
-			</view>
-		</view>
-	</view>
+    <view class="h">
+        <label class="txt">新品首发</label>
+         <navigator class='more' url="../newGoods/newGoods">更多</navigator> 
+    </view>
+    <view class="b">
+      <view class="item" wx:for="{{newProductList}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
+        <navigator url="../goods/goods?id={{item.id}}">
+          <image class="img" src="{{item.pic}}" background-size="cover"></image>
+          <text class="name">{{item.name || ''}}</text>
+          <view class="tx price">
+           <text class='pri dzprice'>￥{{item.price || '0.00'}}</text>
+           <text class='pri yjprice' wx:if="{{item.originalPrice}}">￥{{item.originalPrice}}</text>
+          </view>
+          <!-- <text class="price">￥{{item.retail_price}}</text> -->
+        </navigator>
+      </view>
+    </view>
+  </view>
+
+	<view class="a-section a-popular" wx:if="{{hotGoods.length > 0}}">
+    <view class="h">
+        <label class="txt">人气推荐</label>
+         <navigator class='more' url="../hotGoods/hotGoods">更多</navigator> 
+    </view>
+    <view class="b">
+      <view class="item" wx:for="{{hotGoods}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
+        <navigator url="/pages/goods/goods?id={{item.id}}">
+          <image class="img" src="{{item.pic}}" background-size="cover"></image>
+          <view class="right">
+            <view class="text">
+              <text class="name">{{item.name}}</text>
+              <!-- <text class="desc">{{item.goods_brief}}</text> -->
+              <view class="tx price">
+								<text class='pri dzprice'>￥{{item.price}}</text>
+								<text class='pri yjprice' wx:if="{{item.originalPrice}}">￥{{item.originalPrice}}</text> 
+              </view>
+            </view>
+          </view>
+        </navigator>
+      </view>
+    </view>
+  </view>
+	
 	<view class="a-section a-new" wx:if="{{brandList.length > 0}}">
-		<view>
-			<text class="title1">推荐品牌</text>
-		</view>
-		<view class="b">
-			<view class="item" wx:for="{{brandList}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
-				<navigator url="../goods/goods?id={{item.id}}">
+    <view class="h">
+        <label class="txt">推荐品牌</label>
+         <navigator class='more' url="../newGoods/newGoods">更多</navigator> 
+    </view>
+    <view class="b">
+      <view class="item" wx:for="{{brandList}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
+        <navigator url="../goods/goods?id={{item.id}}">
 					<image class="img" src="{{item.bigPic}}" background-size="cover"></image>
 					<image class="logo" src="{{item.logo}}"></image>
-					<text class="name">{{item.name || ''}}</text>
-					<view class="tx price">
-						<text class='pri dzprice'>现价：￥{{item.price || '0.00'}}</text>
-					</view>
-					<text class="price">原价：￥{{item.originalPrice}}</text>
-				</navigator>
-			</view>
-		</view>
-	</view>
+          <text class="name">{{item.name || ''}}</text>
+          <view class="tx price">
+           <text class='pri dzprice'>￥{{item.price || '0.00'}}</text>
+           <text class='pri yjprice' wx:if="{{item.originalPrice}}">￥{{item.originalPrice}}</text>
+          </view>
+          <!-- <text class="price">￥{{item.retail_price}}</text> -->
+        </navigator>
+      </view>
+    </view>
+  </view>
+	
 </view>
+
 <wxs module="filter">
 function format(ts, option) {
   var date = getDate(ts)
