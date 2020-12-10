@@ -10,6 +10,7 @@ import com.macro.mall.portal.domain.HomeFlashPromotion;
 import com.macro.mall.portal.service.HomeService;
 import com.macro.mall.portal.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -89,6 +90,7 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
+    @Cacheable(value = "mall-port")
     public List<PmsProduct> hotProductList(Integer pageNum, Integer pageSize) {
         int offset = pageSize * (pageNum - 1);
         return homeDao.getHotProductList(offset, pageSize);

@@ -9,7 +9,6 @@ import com.macro.mall.portal.service.HomeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,7 +56,6 @@ public class HomeController {
     }
 
     @ApiOperation("分页获取人气推荐商品")
-    @Cacheable(value = "mall-port")
     @RequestMapping(value = "/hotProductList", method = RequestMethod.GET)
     public CommonResult<List<PmsProduct>> hotProductList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                          @RequestParam(value = "pageSize", defaultValue = "6") Integer pageSize) {
