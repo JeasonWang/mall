@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * 用户地址管理Service
- * Created by macro on 2018/8/28.
+ * Created by jeason on 2018/8/28.
  */
 public interface UmsMemberReceiveAddressService {
     /**

@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * 商品分类，包含子分类
- * Created by macro on 2020/4/6.
+ * Created by jeason on 2020/4/6.
  */
 @Getter
 @Setter

@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * 前台商品管理Controller
- * Created by macro on 2020/4/6.
+ * Created by jeason on 2020/4/6.
  */
 @Controller
 @Api(tags = "PmsPortalProductController", description = "前台商品管理")
