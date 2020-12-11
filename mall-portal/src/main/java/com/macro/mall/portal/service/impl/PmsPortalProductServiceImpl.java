@@ -2,6 +2,7 @@ package com.macro.mall.portal.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.mapper.*;
 import com.macro.mall.model.*;
@@ -106,6 +107,9 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
         PmsSkuStockExample skuExample = new PmsSkuStockExample();
         skuExample.createCriteria().andProductIdEqualTo(product.getId());
         List<PmsSkuStock> skuStockList = skuStockMapper.selectByExample(skuExample);
+        for (PmsSkuStock item : skuStockList){
+            item.setSpData(convertToString(item.getSpData()));
+        }
         result.setSkuStockList(skuStockList);
         //商品阶梯价格设置
         if(product.getPromotionType()==3){
@@ -124,6 +128,21 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
         //商品可用优惠券
         result.setCouponList(portalProductDao.getAvailableCouponList(product.getId(),product.getProductCategoryId()));
         return result;
+    }
+
+    /**
+     * 转化规格属性格式
+     * @param spData
+     * @return
+     */
+    private String convertToString(String spData) {
+        StringBuilder stringBuilder = new StringBuilder();
+        JSONArray keyValues = new JSONArray(spData);
+        for (int i = 0; i < keyValues.size(); i++) {
+            stringBuilder.append(keyValues.getJSONObject(i).get("key") +":" + keyValues.getJSONObject(i).get("value") + ",");
+        }
+        stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
+        return stringBuilder.toString();
     }
 
 
