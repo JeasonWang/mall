@@ -391,8 +391,12 @@ CREATE TABLE `oms_order` (
   `receive_time` datetime DEFAULT NULL COMMENT '确认收货时间',
   `comment_time` datetime DEFAULT NULL COMMENT '评价时间',
   `modify_time` datetime DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COMMENT='订单表';
+  PRIMARY KEY (`id`),
+  KEY `status` (`status`) USING BTREE,
+  KEY `create_time` (`create_time`) USING BTREE,
+  KEY `member_id` (`member_id`),
+  KEY `delete_status` (`delete_status`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='订单表';
 
 -- ----------------------------
 -- Records of oms_order
@@ -443,8 +447,9 @@ CREATE TABLE `oms_order_item` (
   `gift_integration` int(11) DEFAULT '0',
   `gift_growth` int(11) DEFAULT '0',
   `product_attr` varchar(500) DEFAULT NULL COMMENT '商品销售属性:[{"key":"颜色","value":"颜色"},{"key":"容量","value":"4G"}]',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8 COMMENT='订单中所包含的商品';
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 COMMENT='订单中所包含的商品';
 
 -- ----------------------------
 -- Records of oms_order_item

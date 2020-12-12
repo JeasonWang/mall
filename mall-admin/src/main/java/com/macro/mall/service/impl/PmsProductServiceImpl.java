@@ -95,7 +95,9 @@ public class PmsProductServiceImpl implements PmsProductService {
     }
 
     private void handleSkuStockCode(List<PmsSkuStock> skuStockList, Long productId) {
-        if(CollectionUtils.isEmpty(skuStockList))return;
+        if(CollectionUtils.isEmpty(skuStockList)) {
+            return;
+        }
         for(int i=0;i<skuStockList.size();i++){
             PmsSkuStock skuStock = skuStockList.get(i);
             if(StringUtils.isEmpty(skuStock.getSkuCode())){

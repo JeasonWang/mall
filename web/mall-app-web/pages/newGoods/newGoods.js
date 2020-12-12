@@ -50,7 +50,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getIndexData();
   },
 
   /**
@@ -70,10 +70,10 @@ Page({
   getIndexData: function () {
     let that = this;
     var data = new Object();
-    //人气商品推荐
+    //新品首发
     util.request(api.GoodsList, {
       pageNum: 1,
-      pageSize: 6
+      pageSize: 50
     }).then(function (res) {
       console.log(res);
       if (res.code === 200) {

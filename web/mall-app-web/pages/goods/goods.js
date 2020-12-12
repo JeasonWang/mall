@@ -393,7 +393,7 @@ Page({
         });
         return false;
       }
-      console.log(that.data.goods)
+      console.log(that.data.goods);
       //加购商品相关信息
       let goodsData = {
         "price": attr.price,
