@@ -21,7 +21,9 @@ Page({
     number: 1, //加购、购买商品数量
     checkedSpecText: '请选择规格数量',
     checkedSpecPrice: 0, //所选规格对应价格
-    yprice: 0, //佣金
+    checkedSpecPic: '', //所选规格对应图片
+    checkedSpecData: '请选择规格数量', //所选规格对应信息
+    giftPoint: 0, //积分
     proId: 0, //产品id
     proImg: '', //产品展示图
     openAttr: false, //规格选择窗口是否打开
@@ -68,8 +70,8 @@ Page({
       wx.setStorageSync('userId', util.getQueryString(q, 'userId'))
       that.newLogin()
     }
+    //获取商品详细信息
     that.getGoodsInfo();
-    var that = this
     //高度自适应
     wx.getSystemInfo({
       success: function (res) {
@@ -85,8 +87,20 @@ Page({
   },
   onShow: function () {
     //页面显示
-    let token = wx.getStorageSync('token');
     this.cartGoodsCount();
+  },
+  //获取商品图册
+  getGoodsGallery: function(albumPics){
+    var gallerys = [];
+    if(albumPics == null || albumPics.length == 0){
+      gallerys[0] = this.data.proImg;
+    }else{
+      gallerys = albumPics.split(',');
+      gallerys.push(this.data.proImg);
+    }
+    this.setData({
+      gallery: gallerys
+    });
   },
   //获取商品详细信息
   getGoodsInfo: function () {
@@ -94,9 +108,10 @@ Page({
     util.request(api.GoodsDetail + that.data.id).then(function (res) {
       if (res.code === 200) {
         that.setData({
+          giftPoint: res.data.product.giftPoint,
           productList: res.data,
           goods: res.data.product, //商品信息
-          gallery: res.data.product.pic, //商品展示 （备注：此处商品展示图本应调用的是res.data.product.albumPics(相册)的图片数据，但因为后台数据相册中的图片数据没有切割开，无法正常显示，故暂时此处暂时使用封面图进行展示）
+          proImg: res.data.product.pic, //商品展示 （备注：此处商品展示图本应调用的是res.data.product.albumPics(相册)的图片数据，但因为后台数据相册中的图片数据没有切割开，无法正常显示，故暂时此处暂时使用封面图进行展示）
           attribute: res.data.productAttributeList, //商品参数
           issueList: res.data.issue, //常见问题
           brand: res.data.brand, //品牌信息
@@ -105,6 +120,8 @@ Page({
         });
         //设置默认值
         that.setDefSpecInfo(that.data.specificationList);
+        //获取商品图册
+        that.getGoodsGallery(res.data.product.albumPics);
         WxParse.wxParse('goodsDetail', 'html', res.data.product.detailHtml, that); //商品图文详细展示
       }
     });
@@ -116,6 +133,9 @@ Page({
     let state = event.currentTarget.dataset.state;
     let id = event.currentTarget.dataset.nameId;
     let price = event.currentTarget.dataset.price;
+    let pic = event.currentTarget.dataset.pic;
+    let specific = event.currentTarget.dataset.specific;
+
     // 如果为无货导致的禁用 直接返回
     if (state) {
       return;
@@ -123,8 +143,10 @@ Page({
     this.unSelectValue()
     this.selectValue(id)
     that.setData({
-      "checkedSpecPrice": price
-    })
+      "checkedSpecPrice": price,
+      "checkedSpecPic": pic,
+      "checkedSpecData": specific
+    });
   },
   //选中规格
   selectValue: function (id, specNameId) {
@@ -425,25 +447,31 @@ Page({
     //未考虑规格联动情况
     let that = this;
     let hasDefault = false;
-    let price = 0
+    let price = 0;
+    let pic = '';
+    let specific = '';
 
     if (!specificationList) return;
     for (let z = 0; z < specificationList.length; z++) {
-      specificationList[z]["checked"] = false
-      specificationList[z]["state"] = false
+      specificationList[z]["checked"] = false;
+      specificationList[z]["state"] = false;
       if (specificationList[z].stock > 0) {
-        specificationList[z]["state"] = true
+        specificationList[z]["state"] = true;
         if (!hasDefault) {
-          specificationList[z]["checked"] = true
-          price = specificationList[z].price
-          hasDefault = true
+          specificationList[z]["checked"] = true;
+          price = specificationList[z].price;
+          pic =  specificationList[z].pic;
+          specific =  specificationList[z].spData;
+          hasDefault = true;
         }
       }
     }
     console.log("nsalsnaln" + specificationList)
     that.setData({
       'specificationList': specificationList,
-      "checkedSpecPrice": price
+      "checkedSpecPrice": price,
+      "checkedSpecPic": pic,
+      "checkedSpecData": specific
     })
   },
   newLogin: function () {

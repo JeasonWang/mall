@@ -43,9 +43,6 @@ module.exports = {
   CartList: MallApiRootUrl + 'cart/list', //获取购物车的数据
   CartAdd: MallApiRootUrl + 'cart/add', // 添加商品到购物车
   CartDelete: MallApiRootUrl + 'cart/delete', // 删除购物车的商品
-  CartList: MallApiRootUrl + 'cart/list', //获取购物车列表的数据
-  CartAdd: MallApiRootUrl + 'cart/add', // 添加商品到购物车
-  CartDelete: MallApiRootUrl + 'cart/delete', // 删除购物车的商品
   CartUpdate: MallApiRootUrl + 'cart/update/attr', // 修改购物车中商品的规格
   CartUpdateQuantity: MallApiRootUrl + 'cart/update/quantity', //修改购物车中商品数量
   //BuyAdd: NewApiRootUrl + 'buy/add', // 直接购买
