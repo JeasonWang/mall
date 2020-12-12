@@ -1,5 +1,7 @@
 package com.macro.mall.portal.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.portal.domain.ConfirmOrderResult;
@@ -41,6 +43,19 @@ public class OmsPortalOrderController {
     public CommonResult generateOrder(@RequestBody OrderParam orderParam) {
         Map<String, Object> result = portalOrderService.generateOrder(orderParam);
         return CommonResult.success(result, "下单成功");
+    }
+
+    @ApiOperation("获取微信统一下单prepay_id")
+    @RequestMapping(value = "/pay/prepay", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult getPrepayId(@RequestParam Long orderId,@RequestParam Integer payType) {
+        Map<String,String> returnMap = Maps.newHashMap();
+        returnMap.put("timeStamp",String.valueOf(System.currentTimeMillis()/1000));
+        returnMap.put("nonceStr","nonceStr");
+        returnMap.put("package","package");
+        returnMap.put("signType","signType");
+        returnMap.put("paySign","paySign");
+        return CommonResult.success(returnMap, "支付成功");
     }
 
     @ApiOperation("用户支付成功的回调")

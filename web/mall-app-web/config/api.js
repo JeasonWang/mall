@@ -51,7 +51,7 @@ module.exports = {
   CartCheckout: MallApiRootUrl + 'order/generateConfirmOrder', // 根据购物车信息生成订单信息（下单）
   //BuyCheckout: NewApiRootUrl + 'buy/checkout', // 付款前信息确认
   OrderSubmit: MallApiRootUrl + 'order/generateOrder', // 提交订单
-  //NewApiRootUrl + 'pay/prepay', //获取微信统一下单prepay_id
+  PayPrepayId: MallApiRootUrl + 'order/pay/prepay', //获取微信统一下单prepay_id
 
   //搜索页面相关
   SearchResult: SearchApiRootUrl + 'esProduct/search/simple', //搜索结果

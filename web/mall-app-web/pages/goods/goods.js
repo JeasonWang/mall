@@ -28,7 +28,7 @@ Page({
     proImg: '', //产品展示图
     openAttr: false, //规格选择窗口是否打开
     cimPart: true, //显示底端按钮
-    backImage: "", //退出规格选择窗口图标
+    backImage: "/static/images/icon_collect.png", //退出规格选择窗口图标
     nowtime: 0,
     type: 0,
     ntype: '',
