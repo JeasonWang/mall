@@ -9,7 +9,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://39.105.6.8:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://mianduijifeng.top:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
     password: wnGZy2rww
     druid:
@@ -23,11 +23,11 @@ spring:
         login-password: druid
   data:
     mongodb:
-      host: 39.105.6.8
+      host: mianduijifeng.top
       port: 27017
       database: mall-port
   redis:
-    host: 39.105.6.8 # Redis服务器地址
+    host: mianduijifeng.top # Redis服务器地址
     database: 0 # Redis数据库索引（默认为0）
     port: 6379 # Redis服务器连接端口
     password: 123456 # Redis服务器连接密码（默认为空）
@@ -40,7 +40,7 @@ spring:
         min-idle: 0
         time-between-eviction-runs: 1000
   rabbitmq:
-    host: 39.105.6.8
+    host: mianduijifeng.top
     port: 5672
     virtual-host: /mall
     username: mall
