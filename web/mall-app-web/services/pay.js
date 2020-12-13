@@ -11,7 +11,8 @@ const api = require('../config/api.js');
 function payOrder(orderId) {
   return new Promise(function (resolve, reject) {
     util.request(api.PayPrepayId, {
-      orderId: orderId
+      orderId: orderId,
+      payType: 1
     }).then((res) => {
       console.log(res)
       if (res.errno === 0) {

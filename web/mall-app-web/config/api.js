@@ -1,8 +1,9 @@
 //var NewApiRootUrl = 'https://shop.51shop.ink/demo/api/';
 //var MallApiRootUrl = 'http://81.70.0.224:8085/';
-//var MallApiRootUrl = 'http://39.105.6.8:8085/';
+//var MallApiRootUrl = 'https://mianduijifeng.top:8085/';
 var MallApiRootUrl = 'http://127.0.0.1:8085/';
 var SearchApiRootUrl = 'http://127.0.0.1:8081/';
+
 module.exports = {
   //首页数据接口
   IndexUrlBanner: MallApiRootUrl + 'home/content', //首页轮播广告
@@ -85,7 +86,7 @@ module.exports = {
   //Login: NewApiRootUrl + 'auth/login', //账号登录
    //Register: NewApiRootUrl + 'auth/register', //注册*/
 
-  //订单支付   
+  //订单支付
   //OrderQuery: NewApiRootUrl + 'pay/query', //确认支付
   //OrderSuccess: NewApiRootUrl + 'order/updateSuccess',   //支付成功
 
