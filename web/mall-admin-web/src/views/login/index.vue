@@ -41,8 +41,7 @@
             v-model="loginForm.code"
             auto-complete="off"
             placeholder="验证码"
-            style="width: 63%"
-          >
+            style="width: 63%">
             <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
           </el-input>
           <div class="login-code">
@@ -172,12 +171,12 @@
               removeCookie("password");
               removeCookie("rememberMe");
             }
-            console.log("----------"+this.loginForm);
             this.$store.dispatch('Login', this.loginForm).then(() => {
               this.loading = false;
               this.$router.push({path: '/'})
             }).catch(() => {
               this.loading = false
+              this.getCode();
             })
           } else {
             console.log('参数验证不合法！');
