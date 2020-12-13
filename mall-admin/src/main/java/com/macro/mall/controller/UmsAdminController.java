@@ -1,8 +1,12 @@
 package com.macro.mall.controller;
 
 import cn.hutool.core.collection.CollUtil;
+import com.google.code.kaptcha.Producer;
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
+import com.macro.mall.common.service.RedisService;
+import com.macro.mall.common.util.Base64;
+import com.macro.mall.common.util.IdUtils;
 import com.macro.mall.dto.UmsAdminLoginParam;
 import com.macro.mall.dto.UmsAdminParam;
 import com.macro.mall.dto.UpdateAdminPasswordParam;
@@ -14,11 +18,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
+import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +37,7 @@ import java.util.stream.Collectors;
  * 后台用户管理
  * Created by macro on 2018/4/26.
  */
-@Controller
+@RestController
 @Api(tags = "UmsAdminController", description = "后台用户管理")
 @RequestMapping("/admin")
 public class UmsAdminController {
@@ -42,9 +50,66 @@ public class UmsAdminController {
     @Autowired
     private UmsRoleService roleService;
 
+    @Resource(name = "captchaProducerMath")
+    private Producer captchaProducerMath;
+
+    @Resource(name = "captchaProducer")
+    private Producer captchaProducer;
+
+    @Autowired
+    private RedisService redisService;
+
+    /**
+     * 验证码类型
+     */
+    @Value("${mall.captchaType}")
+    private String captchaType;
+
+    /**
+     * 生成验证码
+     */
+    @GetMapping("/captchaImage")
+    public CommonResult getCode() {
+        // 保存验证码信息
+        String uuid = IdUtils.simpleUUID();
+        String verifyKey = "captcha_codes" + uuid;
+
+        String capStr = null, code = null;
+        BufferedImage image = null;
+
+        // 生成验证码
+        if ("math".equals(captchaType))
+        {
+            String capText = captchaProducerMath.createText();
+            capStr = capText.substring(0, capText.lastIndexOf("@"));
+            code = capText.substring(capText.lastIndexOf("@") + 1);
+            image = captchaProducerMath.createImage(capStr);
+        }
+        else if ("char".equals(captchaType))
+        {
+            capStr = code = captchaProducer.createText();
+            image = captchaProducer.createImage(capStr);
+        }
+        // 存入redis 120s
+        redisService.set(verifyKey, code, 120);
+        // 转换流信息写出
+        FastByteArrayOutputStream os = new FastByteArrayOutputStream();
+        try
+        {
+            ImageIO.write(image, "jpg", os);
+        }
+        catch (IOException e)
+        {
+            return CommonResult.failed(e.getMessage());
+        }
+        Map<String,String> map = new HashMap<>();
+        map.put("uuid", uuid);
+        map.put("img", Base64.encode(os.toByteArray()));
+        return CommonResult.success(map);
+    }
+
     @ApiOperation(value = "用户注册")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    @ResponseBody
     public CommonResult<UmsAdmin> register(@Validated @RequestBody UmsAdminParam umsAdminParam) {
         UmsAdmin umsAdmin = adminService.register(umsAdminParam);
         if (umsAdmin == null) {
@@ -55,9 +120,8 @@ public class UmsAdminController {
 
     @ApiOperation(value = "登录以后返回token")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    @ResponseBody
-    public CommonResult login(@Validated @RequestBody UmsAdminLoginParam umsAdminLoginParam) {
-        String token = adminService.login(umsAdminLoginParam.getUsername(), umsAdminLoginParam.getPassword());
+    public CommonResult login(@RequestBody UmsAdminLoginParam umsAdminLoginParam) {
+        String token = adminService.login(umsAdminLoginParam.getUsername(), umsAdminLoginParam.getPassword(), umsAdminLoginParam.getCode(), umsAdminLoginParam.getUuid());
         if (token == null) {
             return CommonResult.validateFailed("用户名或密码错误");
         }
@@ -69,7 +133,6 @@ public class UmsAdminController {
 
     @ApiOperation(value = "刷新token")
     @RequestMapping(value = "/refreshToken", method = RequestMethod.GET)
-    @ResponseBody
     public CommonResult refreshToken(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
         String refreshToken = adminService.refreshToken(token);
@@ -84,7 +147,6 @@ public class UmsAdminController {
 
     @ApiOperation(value = "获取当前登录用户信息")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    @ResponseBody
     public CommonResult getAdminInfo(Principal principal) {
         if(principal==null){
             return CommonResult.unauthorized(null);
@@ -105,14 +167,12 @@ public class UmsAdminController {
 
     @ApiOperation(value = "登出功能")
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    @ResponseBody
     public CommonResult logout() {
         return CommonResult.success(null);
     }
 
     @ApiOperation("根据用户名或姓名分页获取用户列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
     public CommonResult<CommonPage<UmsAdmin>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                                    @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                    @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
@@ -122,7 +182,6 @@ public class UmsAdminController {
 
     @ApiOperation("获取指定用户信息")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
     public CommonResult<UmsAdmin> getItem(@PathVariable Long id) {
         UmsAdmin admin = adminService.getItem(id);
         return CommonResult.success(admin);
@@ -130,7 +189,6 @@ public class UmsAdminController {
 
     @ApiOperation("修改指定用户信息")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    @ResponseBody
     public CommonResult update(@PathVariable Long id, @RequestBody UmsAdmin admin) {
         int count = adminService.update(id, admin);
         if (count > 0) {
@@ -141,7 +199,6 @@ public class UmsAdminController {
 
     @ApiOperation("修改指定用户密码")
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
-    @ResponseBody
     public CommonResult updatePassword(@Validated @RequestBody UpdateAdminPasswordParam updatePasswordParam) {
         int status = adminService.updatePassword(updatePasswordParam);
         if (status > 0) {
@@ -159,7 +216,6 @@ public class UmsAdminController {
 
     @ApiOperation("删除指定用户信息")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    @ResponseBody
     public CommonResult delete(@PathVariable Long id) {
         int count = adminService.delete(id);
         if (count > 0) {
@@ -170,7 +226,6 @@ public class UmsAdminController {
 
     @ApiOperation("修改帐号状态")
     @RequestMapping(value = "/updateStatus/{id}", method = RequestMethod.POST)
-    @ResponseBody
     public CommonResult updateStatus(@PathVariable Long id,@RequestParam(value = "status") Integer status) {
         UmsAdmin umsAdmin = new UmsAdmin();
         umsAdmin.setStatus(status);
@@ -183,7 +238,6 @@ public class UmsAdminController {
 
     @ApiOperation("给用户分配角色")
     @RequestMapping(value = "/role/update", method = RequestMethod.POST)
-    @ResponseBody
     public CommonResult updateRole(@RequestParam("adminId") Long adminId,
                                    @RequestParam("roleIds") List<Long> roleIds) {
         int count = adminService.updateRole(adminId, roleIds);
@@ -195,7 +249,6 @@ public class UmsAdminController {
 
     @ApiOperation("获取指定用户的角色")
     @RequestMapping(value = "/role/{adminId}", method = RequestMethod.GET)
-    @ResponseBody
     public CommonResult<List<UmsRole>> getRoleList(@PathVariable Long adminId) {
         List<UmsRole> roleList = adminService.getRoleList(adminId);
         return CommonResult.success(roleList);

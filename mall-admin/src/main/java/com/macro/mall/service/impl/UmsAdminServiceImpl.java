@@ -4,7 +4,9 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.bo.AdminUserDetails;
+import com.macro.mall.common.exception.ApiException;
 import com.macro.mall.common.exception.Asserts;
+import com.macro.mall.common.service.RedisService;
 import com.macro.mall.common.util.RequestUtil;
 import com.macro.mall.dao.UmsAdminRoleRelationDao;
 import com.macro.mall.dto.UmsAdminParam;
@@ -58,6 +60,8 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     private UmsAdminLoginLogMapper loginLogMapper;
     @Autowired
     private UmsAdminCacheService adminCacheService;
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public UmsAdmin getAdminByUsername(String username) {
@@ -95,8 +99,19 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     }
 
     @Override
-    public String login(String username, String password) {
+    public String login(String username, String password,String code,String uuid) {
         String token = null;
+        String verifyKey = "captcha_codes" + uuid;
+        String captcha = String.valueOf(redisService.get(verifyKey));
+        redisService.del(verifyKey);
+        if (captcha == null)
+        {
+            throw new ApiException("验证码过期");
+        }
+        if (!code.equalsIgnoreCase(captcha))
+        {
+            throw new ApiException("验证码错误");
+        }
         //密码需要客户端加密后传递
         try {
             UserDetails userDetails = loadUserByUsername(username);
@@ -123,7 +138,9 @@ public class UmsAdminServiceImpl implements UmsAdminService {
      */
     private void insertLoginLog(String username) {
         UmsAdmin admin = getAdminByUsername(username);
-        if(admin==null) return;
+        if(admin==null) {
+            return;
+        }
         UmsAdminLoginLog loginLog = new UmsAdminLoginLog();
         loginLog.setAdminId(admin.getId());
         loginLog.setCreateTime(new Date());

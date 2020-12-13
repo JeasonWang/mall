@@ -28,8 +28,11 @@ const user = {
     // 登录
     Login({ commit }, userInfo) {
       const username = userInfo.username.trim()
+      const password = userInfo.password
+      const code = userInfo.code
+      const uuid = userInfo.uuid
       return new Promise((resolve, reject) => {
-        login(username, userInfo.password).then(response => {
+        login(username, password, code, uuid).then(response => {
           const data = response.data
           const tokenStr = data.tokenHead+data.token
           setToken(tokenStr)

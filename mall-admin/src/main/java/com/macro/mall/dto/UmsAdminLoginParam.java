@@ -19,4 +19,10 @@ public class UmsAdminLoginParam {
     @NotEmpty
     @ApiModelProperty(value = "密码",required = true)
     private String password;
+    @NotEmpty
+    @ApiModelProperty(value = "验证码",required = true)
+    private String code;
+    @NotEmpty
+    @ApiModelProperty(value = "唯一标识",required = true)
+    private String uuid = "";
 }

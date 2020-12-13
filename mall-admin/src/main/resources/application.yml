@@ -42,6 +42,7 @@ secure:
       - /actuator/**
       - /druid/**
       - /admin/login
+      - /admin/captchaImage
       - /admin/register
       - /admin/info
       - /admin/logout
