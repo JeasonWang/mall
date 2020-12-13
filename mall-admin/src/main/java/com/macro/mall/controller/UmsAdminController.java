@@ -120,7 +120,7 @@ public class UmsAdminController {
 
     @ApiOperation(value = "登录以后返回token")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public CommonResult login(@RequestBody UmsAdminLoginParam umsAdminLoginParam) {
+    public CommonResult login(@Validated @RequestBody UmsAdminLoginParam umsAdminLoginParam) {
         String token = adminService.login(umsAdminLoginParam.getUsername(), umsAdminLoginParam.getPassword(), umsAdminLoginParam.getCode(), umsAdminLoginParam.getUuid());
         if (token == null) {
             return CommonResult.validateFailed("用户名或密码错误");

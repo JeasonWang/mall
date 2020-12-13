@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  * 用户登录参数
@@ -17,6 +18,7 @@ public class UmsAdminLoginParam {
     @ApiModelProperty(value = "用户名",required = true)
     private String username;
     @NotEmpty
+    @Size(min = 3,max = 100)
     @ApiModelProperty(value = "密码",required = true)
     private String password;
     @NotEmpty
