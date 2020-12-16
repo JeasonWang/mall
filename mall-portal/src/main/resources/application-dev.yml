@@ -1,12 +1,10 @@
 server:
-  port: 8085
-#  ssl:
-#    key-store: C:\Users\wanghuan\Desktop\fsdownload\tomcat.keystore
-#    # key-store: /mydata/tomcat.keystore
-#    key-store-password: tomcat
-#    key-store-type: JKS
-#    key-alias: tomcat
-
+  port: 443
+  ssl:
+    key-store: classpath:ssl/mianduijifeng.top.pfx
+    # key-store: /mydata/tomcat.keystore
+    key-store-password: meiyitian3457355
+    key-store-type: PKCS12
 spring:
   datasource:
     url: jdbc:mysql://mianduijifeng.top:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
@@ -49,7 +47,7 @@ spring:
 logging:
   level:
     root: info
-    com.macro.mall: debug
+    com.macro.mall: info
 
 logstash:
   host: localhost
