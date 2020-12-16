@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 import com.macro.mall.common.service.RedisService;
 import com.macro.mall.common.service.impl.RedisServiceImpl;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
+import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -58,6 +59,15 @@ public class BaseRedisConfig extends CachingConfigurerSupport {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer())).entryTtl(Duration.ofMinutes(3));
         return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
+    }
+
+    /**
+     * 添加自定义缓存异常处理
+     * 当缓存读写异常时,忽略异常
+     */
+    @Override
+    public CacheErrorHandler errorHandler() {
+        return new IgnoreExceptionCacheErrorHandler();
     }
 
 
