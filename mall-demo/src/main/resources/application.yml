@@ -37,7 +37,19 @@ spring:
           enabled: true
       direct:
         acknowledge-mode: manual
-
+  redis:
+    host: localhost # Redis服务器地址
+    database: 0 # Redis数据库索引（默认为0）
+    port: 6379 # Redis服务器连接端口
+    password: 123456 # Redis服务器连接密码（默认为空）
+    timeout: 300ms # 连接超时时间（毫秒）
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: 2000
+        max-idle: 8
+        min-idle: 0
+        time-between-eviction-runs: 1000
 
 mybatis:
   mapper-locations:
@@ -47,7 +59,7 @@ mybatis:
 logging:
   level:
     root: info
-    com.macro.mall: debug
+    com.macro.mall: info
 
 host:
   mall:
