@@ -43,6 +43,17 @@ spring:
     virtual-host: /mall
     username: mall
     password: mall
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    listener:
+      simple:
+        concurrency: 1
+        max-concurrency: 5
+        acknowledge-mode: manual
+        retry:
+          enabled: false
+        direct:
+          acknowledge-mode: manual
 
 logging:
   level:

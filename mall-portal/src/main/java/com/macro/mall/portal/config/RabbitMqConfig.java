@@ -1,9 +1,14 @@
 package com.macro.mall.portal.config;
 
 import com.macro.mall.portal.domain.QueueEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 /**
  * 消息队列相关配置
@@ -12,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2018/9/14
  */
 @Configuration
+@Slf4j
 public class RabbitMqConfig {
 
     /**
@@ -76,6 +82,55 @@ public class RabbitMqConfig {
                 .bind(orderTtlQueue)
                 .to(orderTtlDirect)
                 .with(QueueEnum.QUEUE_TTL_ORDER_CANCEL.getRouteKey());
+    }
+
+//    @Bean
+//    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory){
+//        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+//        /**
+//         * ConfirmCallback：每一条发到rabbitmq server的消息都会调一次confirm方法。
+//         * 如果消息成功到达exchange，则ack参数为true，反之为false；
+//         * cause参数是错误信息；
+//         * CorrelationData可以理解为context，在发送消息时传入的这个参数，此时会拿到。
+//         * ReturnCallback：成功到达exchange，但routing不到任何queue时会调用。
+//         * 可以看到这里能直接拿到message，exchange，routingKey信息。
+//         */
+//        rabbitTemplate.setConfirmCallback((correlationData,ack,cause) -> {
+//            if (ack) {
+//                log.info("消息已确认 correlationData:[{}]",correlationData);
+//            } else {
+//                log.info("消息未确认 cause:[{}]",cause);
+//            }
+//        });
+//        rabbitTemplate.setReturnCallback((message,replyCode,replyText,exchange,routingKey) -> {
+//            log.error("消息:{}发送失败,应答码:{},原因:{},交换机:{},路由键:{}",message.toString(),replyCode,replyText,exchange,routingKey);
+//        });
+//        return rabbitTemplate;
+//    }
+
+    @Resource
+    private RabbitTemplate rabbitTemplate;
+
+    @PostConstruct
+    public void initRabbitTemplate() {
+        /**
+         * ConfirmCallback：每一条发到rabbitmq server的消息都会调一次confirm方法。
+         * 如果消息成功到达exchange，则ack参数为true，反之为false；
+         * cause参数是错误信息；
+         * CorrelationData可以理解为context，在发送消息时传入的这个参数，此时会拿到。
+         * ReturnCallback：成功到达exchange，但routing不到任何queue时会调用。
+         * 可以看到这里能直接拿到message，exchange，routingKey信息。
+         */
+        rabbitTemplate.setConfirmCallback((correlationData,ack,cause) -> {
+            if (ack) {
+                log.info("消息已确认 correlationData:[{}]",correlationData);
+            } else {
+                log.info("消息未确认 cause:[{}]",cause);
+            }
+        });
+        rabbitTemplate.setReturnCallback((message,replyCode,replyText,exchange,routingKey) -> {
+            log.error("消息:{}发送失败,应答码:{},原因:{},交换机:{},路由键:{}",message.toString(),replyCode,replyText,exchange,routingKey);
+        });
     }
 
 }
