@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService()).passwordEncoder(new BCryptPasswordEncoder());
     }
 
+    @Override
     @Bean
     public UserDetailsService userDetailsService() {
         //获取登录用户信息

@@ -6,6 +6,7 @@ import java.lang.annotation.*;
 
 /**
  * 用户验证状态是否在指定范围内的注解
+ * @author wanghuan
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
