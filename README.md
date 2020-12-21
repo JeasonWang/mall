@@ -195,3 +195,18 @@ mall项目全套学习教程连载中，关注公众号「**macrozheng**」第�
 [Apache License 2.0](https://github.com/macrozheng/mall/blob/master/LICENSE)
 
 Copyright (c) 2018-2020 macrozheng
+
+## Jeason在此基础上继续开发，完善功能记录：
+###已完成：
+1. 修改下单功能会导致超卖的问题，暂用乐观锁方式实现
+2. 商城管理后台登录添加验证码，实现七牛云上传
+3. 实现微信小程序前端开发，对应连接商城后台接口
+4. 注册域名，申请ssl，微信小程序需要https方式
+
+###正要做：
+1. 使用elasticsearch7.4实现搜索功能，使用restHighLevel
+2. 使用mq实现削峰降流，实现下单发邮件
+3. 使用异步任务，异步日志记录
+4. 使用redis缓存实现高并发秒杀
+5. 尝试使用kafka或rocketmq替换rabbitmq
+6. 实现主从数据库备份
