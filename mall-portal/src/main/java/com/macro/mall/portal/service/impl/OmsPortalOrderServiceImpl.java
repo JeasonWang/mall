@@ -701,13 +701,15 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
     }
 
     /**
-     * 锁定下单商品的所有库存
+     * 锁定下单商品的对应数量的库存
      */
     private void lockStock(List<CartPromotionItem> cartPromotionItemList) {
         for (CartPromotionItem cartPromotionItem : cartPromotionItemList) {
-            PmsSkuStock skuStock = skuStockMapper.selectByPrimaryKey(cartPromotionItem.getProductSkuId());
-            skuStock.setLockStock(skuStock.getLockStock() + cartPromotionItem.getQuantity());
-            skuStockMapper.updateByPrimaryKeySelective(skuStock);
+            //会造成超卖，修正为加乐观锁方式
+//            PmsSkuStock skuStock = skuStockMapper.selectByPrimaryKey(cartPromotionItem.getProductSkuId());
+//            skuStock.setLockStock(skuStock.getLockStock() + cartPromotionItem.getQuantity());
+//            skuStockMapper.updateByPrimaryKeySelective(skuStock);
+            skuStockMapper.updateLockStock(cartPromotionItem.getProductSkuId(),cartPromotionItem.getQuantity());
         }
     }
 

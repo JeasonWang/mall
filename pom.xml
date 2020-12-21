@@ -18,6 +18,7 @@
         <module>mall-search</module>
         <module>mall-portal</module>
         <module>mall-mq</module>
+        <module>mall-resthighlevel</module>
     </modules>
 
     <parent>

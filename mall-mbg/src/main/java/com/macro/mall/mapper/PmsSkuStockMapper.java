@@ -27,4 +27,12 @@ public interface PmsSkuStockMapper {
     int updateByPrimaryKeySelective(PmsSkuStock record);
 
     int updateByPrimaryKey(PmsSkuStock record);
+
+    /**
+     * 锁定库存
+     * @param productSkuId
+     * @param quantity
+     * @return
+     */
+    int updateLockStock(@Param("productSkuId") Long productSkuId, @Param("quantity")  Integer quantity);
 }
