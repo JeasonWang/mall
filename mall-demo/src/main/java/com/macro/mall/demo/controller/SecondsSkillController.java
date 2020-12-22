@@ -1,6 +1,7 @@
 package com.macro.mall.demo.controller;
 
 import com.macro.mall.common.service.RedisService;
+import com.macro.mall.demo.component.DemoSender;
 import com.macro.mall.mapper.PmsSkuStockMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class SecondsSkillController {
 
     private String key = "mall-port:product-skuId:stock:"+178;
 
+    @Autowired
+    DemoSender demoSender;
+
 
     @GetMapping("/init")
     public void init() {
@@ -33,7 +37,7 @@ public class SecondsSkillController {
     }
 
     @PostMapping("/buy")
-    public String buy(int quantity,int skuId){
+    public String buy(Integer quantity,Long skuId){
         Object stock = redisService.get(key);
         // sku缓存不存在，添加
         if (stock == null){
@@ -47,7 +51,7 @@ public class SecondsSkillController {
         Long newStock = redisService.decr(key,quantity);
         if (newStock >= 0){
             // 使用异步更新mysql
-            //TODO
+            demoSender.send(skuId,quantity);
             return "购买成功";
         }else {
             //库存不足，超卖，需要把之前减掉的库存加回来

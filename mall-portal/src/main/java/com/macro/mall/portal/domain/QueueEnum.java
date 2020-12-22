@@ -4,7 +4,9 @@ import lombok.Getter;
 
 /**
  * 消息队列枚举配置
- * Created by jeason on 2018/9/14.
+ *
+ * @author jeason
+ * @date 2018/9/14
  */
 @Getter
 public enum QueueEnum {
@@ -15,7 +17,12 @@ public enum QueueEnum {
     /**
      * 消息通知ttl队列
      */
-    QUEUE_TTL_ORDER_CANCEL("mall.order.direct.ttl", "mall.order.cancel.ttl", "mall.order.cancel.ttl");
+    QUEUE_TTL_ORDER_CANCEL("mall.order.direct.ttl", "mall.order.cancel.ttl", "mall.order.cancel.ttl"),
+
+    /**
+     * 库存同步队列
+     */
+    QUEUE_STOCK_SYNCHRONIZATION("mall.stock.direct", "mall.stock.synchronization.queue", "mall.stock.synchronization.key");
 
     /**
      * 交换名称

@@ -84,6 +84,21 @@ public class RabbitMqConfig {
                 .with(QueueEnum.QUEUE_TTL_ORDER_CANCEL.getRouteKey());
     }
 
+    @Bean
+    DirectExchange stockDirect(){
+        return ExchangeBuilder.directExchange(QueueEnum.QUEUE_STOCK_SYNCHRONIZATION.getExchange()).durable(true).build();
+    }
+
+    @Bean
+    Queue stockQueue(){
+        return new Queue(QueueEnum.QUEUE_STOCK_SYNCHRONIZATION.getName());
+    }
+
+    @Bean
+    Binding stockBinding(DirectExchange stockDirect,Queue stockQueue){
+        return BindingBuilder.bind(stockQueue).to(stockDirect).with(QueueEnum.QUEUE_STOCK_SYNCHRONIZATION.getRouteKey());
+    }
+
 //    @Bean
 //    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory){
 //        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);

@@ -40,6 +40,7 @@ public class CancelOrderReceiver {
             //channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
             channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
             // TODO 该消息已经导致异常，重发无意义，自己实现补偿机制
+            LOGGER.info("订单取消消息消费异常[{}]",orderId);
             System.out.println("receiver fail");
         }
 
