@@ -15,10 +15,10 @@ public class StockSynchronizationSender {
     @Autowired
     RabbitTemplate rabbitTemplate;
 
-    public void sendStockSynchronization(Long skuId,Integer quantity){
-        String s = skuId+"-"+quantity;
+    public void sendStockSynchronizationLock(Long skuId,Integer quantity){
+        String sku = skuId+"-"+quantity;
         rabbitTemplate.convertAndSend(QueueEnum.QUEUE_STOCK_SYNCHRONIZATION.getExchange(),
                 QueueEnum.QUEUE_STOCK_SYNCHRONIZATION.getRouteKey(),
-                s);
+                sku);
     }
 }

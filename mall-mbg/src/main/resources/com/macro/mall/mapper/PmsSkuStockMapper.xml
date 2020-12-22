@@ -195,7 +195,12 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <select id="selectAllAvailableSku" resultType="com.macro.mall.model.PmsSkuStock">
+    select
+    <include refid="Base_Column_List" />
+    from pms_sku_stock where stock - lock_stock > 0
+  </select>
+    <update id="updateByExampleSelective" parameterType="map">
     update pms_sku_stock
     <set>
       <if test="record.id != null">

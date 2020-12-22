@@ -1,9 +1,11 @@
 package com.macro.mall.portal.component;
 
+import com.macro.mall.portal.service.PmsPortalSkuStockService;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,17 +18,26 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class StockSynchronizationReceiver {
+    @Autowired
+    PmsPortalSkuStockService portalSkuStockService;
 
     @RabbitListener(queues = "mall.stock.synchronization.queue")
-    public void receiver(String s, Channel channel, Message message) throws IOException {
-        log.info("Receive orderId:[{}]",s);
+    public void receiver(String sku, Channel channel, Message message) throws IOException {
+        log.info("Receive orderId:[{}]",sku);
         try{
-            System.out.println(s);
+            System.out.println(sku);
+            String[] ss = sku.split("-");
+            Long skuId = Long.valueOf(ss[0]);
+            Integer quantity = Integer.valueOf(ss[1]);
+            boolean result = portalSkuStockService.skuStockLock(skuId,quantity);
+            if (!result){
+                log.error("库存锁定异常[{}]",sku);
+            }
             channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
         } catch (IOException e) {
             e.printStackTrace();
             channel.basicReject(message.getMessageProperties().getDeliveryTag(),false);
-            log.info("订单取消消息消费异常[{}]",s);
+            log.info("库存锁定异常[{}]",sku);
         }
     }
 }

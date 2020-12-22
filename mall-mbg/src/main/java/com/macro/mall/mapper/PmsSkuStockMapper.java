@@ -29,6 +29,12 @@ public interface PmsSkuStockMapper {
     int updateByPrimaryKey(PmsSkuStock record);
 
     /**
+     * 查询所有可用库存sku
+     * @return
+     */
+    List<PmsSkuStock> selectAllAvailableSku();
+
+    /**
      * 锁定库存
      * @param productSkuId
      * @param quantity
