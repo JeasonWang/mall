@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @Author: jeason
- * @Description:
+ * @Description: https://blog.csdn.net/mycsdnhome/article/details/107459078?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.control
  * @Date: 2020/12/20 21:05
  */
 @RestController
@@ -22,9 +22,9 @@ public class SecondsSkillController {
     private PmsSkuStockMapper skuStockMapper;
 
     @Autowired
-    RedisService redisService;
+    private RedisService redisService;
 
-    private String key = "sku178";
+    private String key = "mall-port:product-skuId:stock:"+178;
 
 
     @GetMapping("/init")
@@ -33,14 +33,26 @@ public class SecondsSkillController {
     }
 
     @PostMapping("/buy")
-    public String buy(int quantity){
-        int l = (int) redisService.get(key);
-        if (l<quantity){
-            return "库存不足";
+    public String buy(int quantity,int skuId){
+        Object stock = redisService.get(key);
+        // sku缓存不存在，添加
+        if (stock == null){
+            return "商品不存在redis中";
         }
-        //锁定
-        Long result = redisService.decr(key,quantity);
-        System.out.println(result);
-        return "剩余："+result;
+        int num = (int) stock;
+        if (quantity > num){
+            return "商品库存不足";
+        }
+        //减库存，由于和前面的查库存不是原子操作，需要再次检查库存剩余数量
+        Long newStock = redisService.decr(key,quantity);
+        if (newStock >= 0){
+            // 使用异步更新mysql
+            //TODO
+            return "购买成功";
+        }else {
+            //库存不足，超卖，需要把之前减掉的库存加回来
+            redisService.incr(key,quantity);
+            return "商品库存不足";
+        }
     }
 }

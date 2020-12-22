@@ -207,6 +207,6 @@ Copyright (c) 2018-2020 macrozheng
 1. 使用elasticsearch7.4实现搜索功能，使用restHighLevel
 2. 使用mq实现削峰降流，实现下单发邮件
 3. 使用异步任务，异步日志记录
-4. 使用redis缓存实现高并发秒杀
+4. 使用redis缓存实现高并发秒杀http://www.fecmall.com/topic/648
 5. 尝试使用kafka或rocketmq替换rabbitmq
 6. 实现主从数据库备份
