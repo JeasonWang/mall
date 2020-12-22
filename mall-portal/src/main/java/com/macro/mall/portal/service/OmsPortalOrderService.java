@@ -27,6 +27,11 @@ public interface OmsPortalOrderService {
     Map<String, Object> generateOrder(OrderParam orderParam);
 
     /**
+     * 根据提交信息生成订单redis版
+     */
+    Map<String, Object> generateOrderByRedis(OrderParam orderParam);
+
+    /**
      * 支付成功后的回调
      */
     @Transactional
@@ -68,4 +73,5 @@ public interface OmsPortalOrderService {
      * 用户根据订单ID删除订单
      */
     void deleteOrder(Long orderId);
+
 }

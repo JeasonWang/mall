@@ -45,6 +45,14 @@ public class OmsPortalOrderController {
         return CommonResult.success(result, "下单成功");
     }
 
+    @ApiOperation("根据购物车信息生成订单，redis高并发版")
+    @RequestMapping(value = "/generateOrderByRedis", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult generateOrderByRedis(@RequestBody OrderParam orderParam) {
+        Map<String, Object> result = portalOrderService.generateOrderByRedis(orderParam);
+        return CommonResult.success(result, "下单成功");
+    }
+
     @ApiOperation("获取微信统一下单prepay_id")
     @RequestMapping(value = "/pay/prepay", method = RequestMethod.GET)
     @ResponseBody
