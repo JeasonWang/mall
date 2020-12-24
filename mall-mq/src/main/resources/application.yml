@@ -12,8 +12,8 @@ spring:
   rabbitmq:
     host: 39.105.6.8
     port: 5672
-    username: mall
-    password: mall
+    username: guest
+    password: guest
     virtual-host: /
     #支持发布确认，已被废弃
     #publisher-confirms: true
@@ -47,6 +47,19 @@ spring:
         max-active: 8
         # #连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1ms
+  mail:
+    host: smtp.qq.com
+    protocol: smtp
+    default-encoding: UTF-8
+    password: abc
+    username: 610813893@qq.com
+    port: 587
+    properties:
+      mail:
+        debug: true
+        stmp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
 
 mybatis:
   mapper-locations:
