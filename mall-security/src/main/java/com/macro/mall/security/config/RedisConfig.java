@@ -13,4 +13,5 @@ import org.springframework.context.annotation.Configuration;
 public class RedisConfig extends BaseRedisConfig {
     public static final String MALL_PORTAL_CACHE_KEY="mall_portal:";
     public static final String MALL_ADMIN_CACHE_KEY="mall_admin:";
+    public static final String MALL_PORTAL_PRODUCT_SKUID_KEY = "mall_port:product_skuId:stock:";
 }

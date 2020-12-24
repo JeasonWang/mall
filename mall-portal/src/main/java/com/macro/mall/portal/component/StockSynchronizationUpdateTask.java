@@ -1,6 +1,5 @@
 package com.macro.mall.portal.component;
 
-import com.macro.mall.portal.service.OmsPortalOrderService;
 import com.macro.mall.portal.service.PmsPortalSkuStockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

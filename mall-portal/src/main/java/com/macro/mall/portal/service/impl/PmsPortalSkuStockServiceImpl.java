@@ -4,6 +4,7 @@ import com.macro.mall.common.service.RedisService;
 import com.macro.mall.mapper.PmsSkuStockMapper;
 import com.macro.mall.model.PmsSkuStock;
 import com.macro.mall.portal.service.PmsPortalSkuStockService;
+import com.macro.mall.security.config.RedisConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +22,11 @@ public class PmsPortalSkuStockServiceImpl implements PmsPortalSkuStockService {
     @Autowired
     PmsSkuStockMapper pmsSkuStockMapper;
 
-    private String prixKey = "mall-port:product-skuId:stock:";
-
     @Override
     public void skuStockSynchronization() {
         List<PmsSkuStock> pmsSkuStocks = pmsSkuStockMapper.selectAllAvailableSku();
         for(PmsSkuStock sku : pmsSkuStocks){
-            redisService.set(prixKey + sku.getId(),sku.getStock() - sku.getLockStock());
+            redisService.set(RedisConfig.MALL_PORTAL_PRODUCT_SKUID_KEY + sku.getId(),sku.getStock() - sku.getLockStock());
         }
     }
 

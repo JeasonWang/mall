@@ -9,11 +9,14 @@ import com.macro.mall.common.service.RedisService;
 import com.macro.mall.mapper.*;
 import com.macro.mall.model.*;
 import com.macro.mall.portal.component.CancelOrderSender;
+import com.macro.mall.portal.component.StockSynchronizationSender;
 import com.macro.mall.portal.dao.PortalOrderDao;
 import com.macro.mall.portal.dao.PortalOrderItemDao;
 import com.macro.mall.portal.dao.SmsCouponHistoryDao;
 import com.macro.mall.portal.domain.*;
 import com.macro.mall.portal.service.*;
+import com.macro.mall.security.config.RedisConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,7 @@ import java.util.stream.Collectors;
  * Created by jeason on 2018/8/30.
  */
 @Service
+@Slf4j
 public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
     @Autowired
     private UmsMemberService memberService;
@@ -66,6 +70,9 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
     private OmsOrderItemMapper orderItemMapper;
     @Autowired
     private CancelOrderSender cancelOrderSender;
+
+    @Autowired
+    private StockSynchronizationSender stockSynchronizationSender;
 
     @Override
     public ConfirmOrderResult generateConfirmOrder(List<Long> cartIds) {
@@ -271,7 +278,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
             orderItemList.add(orderItem);
         }
         //判断购物车中商品是否都有库存
-        if (!hasStock(cartPromotionItemList)) {
+        if (!hasStockRedis(cartPromotionItemList)) {
             Asserts.fail("库存不足，无法下单");
         }
         //TODO
@@ -313,7 +320,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         //计算order_item的实付金额
         handleRealAmount(orderItemList);
         //进行库存锁定
-        lockStock(cartPromotionItemList);
+        lockStockRedis(cartPromotionItemList);
         //根据商品合计、运费、活动优惠、优惠券、积分计算应付金额
         OmsOrder order = new OmsOrder();
         order.setDiscountAmount(new BigDecimal(0));
@@ -628,7 +635,9 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
      * @param useStatus 0->未使用；1->已使用
      */
     private void updateCouponStatus(Long couponId, Long memberId, Integer useStatus) {
-        if (couponId == null) return;
+        if (couponId == null) {
+            return;
+        }
         //查询第一张优惠券
         SmsCouponHistoryExample example = new SmsCouponHistoryExample();
         example.createCriteria().andMemberIdEqualTo(memberId)
@@ -869,6 +878,25 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
     }
 
     /**
+     * 锁定下单商品的对应数量的库存
+     */
+    private void lockStockRedis(List<CartPromotionItem> cartPromotionItemList) {
+        for (int i=0;i<cartPromotionItemList.size();i++) {
+            Long num = redisService.decr(RedisConfig.MALL_PORTAL_PRODUCT_SKUID_KEY + cartPromotionItemList.get(i).getProductSkuId(), cartPromotionItemList.get(i).getQuantity());
+            if (num < 0){
+                //库存不足，补偿机制,全部回滚
+                log.info("[{}]库存不足",cartPromotionItemList.get(i).getProductSkuId());
+                for(int j=0;j<=i;j++){
+                    redisService.incr(RedisConfig.MALL_PORTAL_PRODUCT_SKUID_KEY + cartPromotionItemList.get(i).getProductSkuId(), cartPromotionItemList.get(i).getQuantity());
+                }
+                Asserts.fail("库存不足，无法下单");
+            }
+        }
+        // todo 优化成发送list
+        cartPromotionItemList.forEach(i -> stockSynchronizationSender.sendStockSynchronizationLock(i.getProductSkuId(),i.getQuantity()));
+    }
+
+    /**
      * 判断下单商品是否都有库存
      */
     private boolean hasStock(List<CartPromotionItem> cartPromotionItemList) {
@@ -876,6 +904,22 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
             if (cartPromotionItem.getRealStock()==null||cartPromotionItem.getRealStock() <= 0) {
                 return false;
             }
+        }
+        return true;
+    }
+
+    /**
+     * 判断下单商品是否都有库存
+     */
+    private boolean hasStockRedis(List<CartPromotionItem> cartPromotionItemList) {
+        for (CartPromotionItem cartPromotionItem : cartPromotionItemList) {
+            if (redisService.get(RedisConfig.MALL_PORTAL_PRODUCT_SKUID_KEY + cartPromotionItem.getProductSkuId()) == null
+            || (int)redisService.get(RedisConfig.MALL_PORTAL_PRODUCT_SKUID_KEY + cartPromotionItem.getProductSkuId()) < cartPromotionItem.getQuantity()){
+                return false;
+            }
+//            if (cartPromotionItem.getRealStock()==null||cartPromotionItem.getRealStock() <= 0) {
+//                return false;
+//            }
         }
         return true;
     }
