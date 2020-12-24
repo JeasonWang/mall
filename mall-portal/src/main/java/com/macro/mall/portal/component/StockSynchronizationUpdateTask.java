@@ -8,12 +8,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
- * Created by jeason on 2018/8/24.
+ *
+ * @author jeason
+ * @date 2018/8/24
  * mysql和redis库存同步更新
  */
 @Component
 public class StockSynchronizationUpdateTask {
-    private Logger LOGGER =LoggerFactory.getLogger(StockSynchronizationUpdateTask.class);
+    private Logger logger =LoggerFactory.getLogger(StockSynchronizationUpdateTask.class);
     @Autowired
     private PmsPortalSkuStockService portalSkuStockService;
 
@@ -21,9 +23,9 @@ public class StockSynchronizationUpdateTask {
      * cron表达式：Seconds Minutes Hours DayofMonth Month DayofWeek [Year]
      * 每天凌晨三点同步mysql库存至redis
      */
-    @Scheduled(cron = "0 0/5 * ? * ?")
+    @Scheduled(cron = "0 0/15 * ? * ?")
     private void mysqlAndRedisStockSynchronization(){
         portalSkuStockService.skuStockSynchronization();
-        LOGGER.info("每天凌晨三点同步mysql库存至redis");
+        logger.info("每天凌晨三点同步mysql库存至redis");
     }
 }
