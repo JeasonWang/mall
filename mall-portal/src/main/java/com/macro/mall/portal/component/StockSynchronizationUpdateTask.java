@@ -21,7 +21,7 @@ public class StockSynchronizationUpdateTask {
      * cron表达式：Seconds Minutes Hours DayofMonth Month DayofWeek [Year]
      * 每天凌晨三点同步mysql库存至redis
      */
-    @Scheduled(cron = "0 0 3 ? * ?")
+    @Scheduled(cron = "0 0/5 * ? * ?")
     private void mysqlAndRedisStockSynchronization(){
         portalSkuStockService.skuStockSynchronization();
         LOGGER.info("每天凌晨三点同步mysql库存至redis");

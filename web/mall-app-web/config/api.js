@@ -1,7 +1,7 @@
 //var NewApiRootUrl = 'https://shop.51shop.ink/demo/api/';
 //var MallApiRootUrl = 'http://81.70.0.224:8085/';
 //var MallApiRootUrl = 'https://mianduijifeng.top:8085/';
-var MallApiRootUrl = 'http://127.0.0.1:8085/';
+var MallApiRootUrl = 'https://127.0.0.1:443/';
 var SearchApiRootUrl = 'http://127.0.0.1:8081/';
 
 module.exports = {
@@ -51,7 +51,7 @@ module.exports = {
   //下单页面
   CartCheckout: MallApiRootUrl + 'order/generateConfirmOrder', // 根据购物车信息生成订单信息（下单）
   //BuyCheckout: NewApiRootUrl + 'buy/checkout', // 付款前信息确认
-  OrderSubmit: MallApiRootUrl + 'order/generateOrder', // 提交订单
+  OrderSubmit: MallApiRootUrl + 'order/generateOrderByRedis', // 提交订单
   PayPrepayId: MallApiRootUrl + 'order/pay/prepay', //获取微信统一下单prepay_id
 
   //搜索页面相关

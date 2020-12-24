@@ -32,6 +32,8 @@ public class StockSynchronizationReceiver {
             boolean result = portalSkuStockService.skuStockLock(skuId,quantity);
             if (!result){
                 log.error("库存锁定异常[{}]",sku);
+            }else {
+                log.info("库存锁定成功[{}]",sku);
             }
             channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
         } catch (IOException e) {

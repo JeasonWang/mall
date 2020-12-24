@@ -195,7 +195,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <select id="selectAllAvailableSku" resultType="com.macro.mall.model.PmsSkuStock">
+  <select id="selectAllAvailableSku" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from pms_sku_stock where stock - lock_stock > 0
