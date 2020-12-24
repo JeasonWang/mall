@@ -1,4 +1,21 @@
 # mall
+## 学习有名的开源框架mall，并在mall的基础上进行继续开发，改进和完善mall系统。
+
+## Jeason在此基础上继续开发，完善功能记录：
+###已完成：
+1. 修改下单功能会导致超卖的问题，暂用乐观锁方式实现
+2. 商城管理后台登录添加验证码，实现七牛云上传
+3. 实现微信小程序前端开发，对应连接商城后台接口
+4. 注册域名，申请ssl，微信小程序需要https方式
+5. 使用mq + redis缓存实现高并发秒杀http://www.fecmall.com/topic/648
+
+###正要做：
+1. 使用elasticsearch7.4实现搜索功能，使用restHighLevel
+2. 使用mq实现削峰降流，实现下单发邮件
+3. 使用异步任务，异步日志记录
+5. 尝试使用kafka或rocketmq替换rabbitmq
+6. 实现主从数据库备份
+
 
 <p>
   <a href="#公众号"><img src="http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/badge/%E5%85%AC%E4%BC%97%E5%8F%B7-macrozheng-blue.svg" alt="公众号"></a>
@@ -31,15 +48,11 @@
 
 项目演示地址： [http://www.macrozheng.com/admin/index.html](http://www.macrozheng.com/admin/index.html)  
 
-![后台管理系统功能演示](http://img.macrozheng.com/mall/project/mall_admin_show.png)
-
 #### 前台商城系统
 
 前端项目`mall-app-web`地址：敬请期待......
 
 项目演示地址：[http://www.macrozheng.com/app/index.html](http://www.macrozheng.com/app/index.html)
-
-![前台商城系统功能演示](http://img.macrozheng.com/mall/project/mall_app_show.png)
 
 ### 组织结构
 
@@ -181,32 +194,3 @@ mall
 - 使用MinIO存储文件请参考：[前后端分离项目，如何优雅实现文件存储](http://www.macrozheng.com/#/technology/minio_use);
 - 读写分离解决方案请参考：[你还在代码里做读写分离么，试试这个中间件吧](http://www.macrozheng.com/#/reference/gaea);
 - Redis集群解决方案请参考：[Docker环境下秒建Redis集群，连SpringBoot也整上了！](http://www.macrozheng.com/#/reference/redis_cluster)。
-
-## 公众号
-
-mall项目全套学习教程连载中，关注公众号「**macrozheng**」第一时间获取。
-
-加微信群交流，公众号后台回复「**加群**」即可。
-
-![公众号图片](http://macro-oss.oss-cn-shenzhen.aliyuncs.com/mall/banner/qrcode_for_macrozheng_258.jpg)
-
-## 许可证
-
-[Apache License 2.0](https://github.com/macrozheng/mall/blob/master/LICENSE)
-
-Copyright (c) 2018-2020 macrozheng
-
-## Jeason在此基础上继续开发，完善功能记录：
-###已完成：
-1. 修改下单功能会导致超卖的问题，暂用乐观锁方式实现
-2. 商城管理后台登录添加验证码，实现七牛云上传
-3. 实现微信小程序前端开发，对应连接商城后台接口
-4. 注册域名，申请ssl，微信小程序需要https方式
-
-###正要做：
-1. 使用elasticsearch7.4实现搜索功能，使用restHighLevel
-2. 使用mq实现削峰降流，实现下单发邮件
-3. 使用异步任务，异步日志记录
-4. 使用redis缓存实现高并发秒杀http://www.fecmall.com/topic/648
-5. 尝试使用kafka或rocketmq替换rabbitmq
-6. 实现主从数据库备份
