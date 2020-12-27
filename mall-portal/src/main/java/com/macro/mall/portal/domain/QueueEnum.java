@@ -22,7 +22,13 @@ public enum QueueEnum {
     /**
      * 库存同步队列
      */
-    QUEUE_STOCK_SYNCHRONIZATION("mall.stock.direct", "mall.stock.synchronization.queue", "mall.stock.synchronization.key");
+    QUEUE_STOCK_SYNCHRONIZATION("mall.stock.direct", "mall.stock.synchronization.queue", "mall.stock.synchronization.key"),
+
+    /**
+     * 订单邮件队列
+     */
+    QUEUE_ORDER_MAIL("mall.order.mail.direct", "mall.order.mail.queue", "mall.order.mail.key");
+
 
     /**
      * 交换名称

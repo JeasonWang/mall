@@ -22,9 +22,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @Slf4j
 public class RabbitConfig {
-    public final static String DIRECT_QUEUE="demo_queue";
-    public final static String DIRECT_EXCHANGE="DirectExchange";
-    public final static String DIRECT_KEY="demo_key";
+
     @Resource
     private RabbitTemplate template;
 
@@ -67,17 +65,4 @@ public class RabbitConfig {
         }
     }
 
-    @Bean(DIRECT_EXCHANGE)
-    public Exchange directExchange(){
-        return ExchangeBuilder.directExchange(DIRECT_EXCHANGE).durable(true).autoDelete().build();
-    }
-    @Bean(DIRECT_QUEUE)
-    public Queue directQueue(){
-        return QueueBuilder.durable(DIRECT_QUEUE).build();
-    }
-
-    @Bean
-    public Binding bindingDirect(@Qualifier(DIRECT_QUEUE) Queue queue, @Qualifier(DIRECT_EXCHANGE) Exchange exchange){
-        return BindingBuilder.bind(queue).to(exchange).with(DIRECT_KEY).noargs();
-    }
 }
