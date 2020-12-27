@@ -19,7 +19,7 @@ public class SwaggerConfig extends BaseSwaggerConfig {
                 .apiBasePackage("com.macro.mall.demo.controller")
                 .title("mall-demo系统")
                 .description("SpringBoot版本中的一些示例")
-                .contactName("macro")
+                .contactName("jeason")
                 .version("1.0")
                 .enableSecurity(true)
                 .build();
