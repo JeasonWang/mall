@@ -17,8 +17,8 @@
         <module>mall-admin</module>
         <module>mall-search</module>
         <module>mall-portal</module>
-        <module>mall-mq</module>
         <module>mall-resthighlevel</module>
+        <module>mall-mail</module>
     </modules>
 
     <parent>

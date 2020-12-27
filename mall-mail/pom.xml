@@ -9,9 +9,9 @@
     </parent>
 
     <groupId>com.macro.mall</groupId>
-    <artifactId>mall-mq</artifactId>
+    <artifactId>mall-mail</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>mall-mq</name>
+    <name>mall-mail</name>
     <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 
