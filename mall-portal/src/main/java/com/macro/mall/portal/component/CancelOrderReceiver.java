@@ -33,7 +33,7 @@ public class CancelOrderReceiver {
             //过期订单取消
             portalOrderService.cancelOrder(orderId);
             //订单取消通知
-            mailService.sendSimpleMail("610813893@qq.com","订单取消通知",orderId.toString());
+            //mailService.sendSimpleMail("610813893@qq.com","订单取消通知",orderId.toString());
             //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了 否则消息服务器以为这条消息没处理掉 后续还会再发
             channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
             System.out.println("receiver success");
