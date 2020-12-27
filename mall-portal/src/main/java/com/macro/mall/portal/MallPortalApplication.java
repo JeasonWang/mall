@@ -3,6 +3,9 @@ package com.macro.mall.portal;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author jeason
+ */
 @SpringBootApplication(scanBasePackages = "com.macro.mall")
 public class MallPortalApplication {
 
