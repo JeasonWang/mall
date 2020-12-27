@@ -1,6 +1,6 @@
-package com.macro.mall.mallmq.service.impl;
+package com.macro.mall.mail.service.impl;
 
-import com.macro.mall.mallmq.service.IMailService;
+import com.macro.mall.mail.service.IMailService;
 import com.macro.mall.model.OmsOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ import java.io.File;
  * @Date: 2020/12/27 14:04
  */
 @Service
-public class IMailServiceImpl implements IMailService {
+public class MailServiceImpl implements IMailService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**

@@ -1,4 +1,4 @@
-package com.macro.mall.mallmq.service;
+package com.macro.mall.mail.service;
 
 import com.macro.mall.model.OmsOrder;
 

@@ -52,6 +52,7 @@
         <minio.version>7.1.0</minio.version>
         <mall-common.version>1.0-SNAPSHOT</mall-common.version>
         <mall-mbg.version>1.0-SNAPSHOT</mall-mbg.version>
+        <mall-mail.version>1.0-SNAPSHOT</mall-mail.version>
         <mall-security.version>1.0-SNAPSHOT</mall-security.version>
         <kaptcha.version>2.3.2</kaptcha.version>
     </properties>
@@ -87,6 +88,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.macro.mall</groupId>
+                <artifactId>mall-mail</artifactId>
+                <version>${mall-mail.version}</version>
+            </dependency>
             <!--mall通用模块-->
             <dependency>
                 <groupId>com.macro.mall</groupId>

@@ -1,6 +1,6 @@
-package com.macro.mall.mallmq;
+package com.macro.mall.mail;
 
-import com.macro.mall.mallmq.service.IMailService;
+import com.macro.mall.mail.service.IMailService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

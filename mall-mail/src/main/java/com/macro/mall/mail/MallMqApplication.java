@@ -1,4 +1,4 @@
-package com.macro.mall.mallmq;
+package com.macro.mall.mail;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

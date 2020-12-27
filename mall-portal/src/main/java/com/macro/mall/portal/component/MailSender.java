@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @Description:
  * @Date: 2020/12/22 21:16
  */
-@Component
+//@Component
 @Slf4j
 public class MailSender {
     @Autowired
