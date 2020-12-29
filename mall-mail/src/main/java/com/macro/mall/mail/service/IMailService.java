@@ -1,6 +1,6 @@
 package com.macro.mall.mail.service;
 
-import com.macro.mall.model.OmsOrder;
+import com.macro.mall.mail.domain.OmsOrder;
 
 /**
  * @Author: jeason

@@ -1,7 +1,8 @@
 package com.macro.mall.mail.service.impl;
 
+import com.macro.mall.common.exception.ApiException;
+import com.macro.mall.mail.domain.OmsOrder;
 import com.macro.mall.mail.service.IMailService;
-import com.macro.mall.model.OmsOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +125,7 @@ public class MailServiceImpl implements IMailService {
             logger.info("邮件已经发送。");
         } catch (MessagingException e) {
             logger.error("发送邮件时发生异常！", e);
+            throw new ApiException("发送邮件时发生异常");
         }
     }
 

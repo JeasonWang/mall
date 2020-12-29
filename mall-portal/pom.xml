@@ -24,10 +24,6 @@
         </dependency>
         <dependency>
             <groupId>com.macro.mall</groupId>
-            <artifactId>mall-mail</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.macro.mall</groupId>
             <artifactId>mall-security</artifactId>
         </dependency>
         <dependency>

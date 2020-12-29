@@ -1,6 +1,6 @@
 package com.macro.mall.portal.component;
 
-import com.macro.mall.mail.service.IMailService;
+import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.portal.service.OmsPortalOrderService;
 import com.rabbitmq.client.Channel;
 import org.slf4j.Logger;
@@ -9,6 +9,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
@@ -24,7 +25,8 @@ public class CancelOrderReceiver {
     @Autowired
     private OmsPortalOrderService portalOrderService;
     @Autowired
-    IMailService mailService;
+    RestTemplate restTemplate;
+    private final static String requestUrl = "http://localhost:8082/mail/orderNoticeMail/";
 
     @RabbitListener(queues = "mall.order.cancel")
     public void receiver(Long orderId, Channel channel, Message message) throws IOException {
@@ -33,7 +35,7 @@ public class CancelOrderReceiver {
             //过期订单取消
             portalOrderService.cancelOrder(orderId);
             //订单取消通知
-            //mailService.sendSimpleMail("610813893@qq.com","订单取消通知",orderId.toString());
+            //CommonResult res = restTemplate.postForObject(requestUrl,orderId,CommonResult.class);
             //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了 否则消息服务器以为这条消息没处理掉 后续还会再发
             channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
             System.out.println("receiver success");
