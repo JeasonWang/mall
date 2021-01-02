@@ -30,7 +30,7 @@ public class CancelOrderReceiver {
 
     @RabbitListener(queues = "mall.order.cancel")
     public void receiver(Long orderId, Channel channel, Message message) throws IOException {
-        LOGGER.info("Receive orderId:[{}]",orderId);
+        LOGGER.info("Receive cancel order orderId:[{}]",orderId);
         try {
             //过期订单取消
             portalOrderService.cancelOrder(orderId);
@@ -38,7 +38,7 @@ public class CancelOrderReceiver {
             //CommonResult res = restTemplate.postForObject(requestUrl,orderId,CommonResult.class);
             //告诉服务器收到这条消息 已经被我消费了 可以在队列删掉 这样以后就不会再发了 否则消息服务器以为这条消息没处理掉 后续还会再发
             channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
-            System.out.println("receiver success");
+            System.out.println("receiver cancel order success");
         } catch (IOException e) {
             e.printStackTrace();
             //丢弃这条消息
@@ -48,7 +48,7 @@ public class CancelOrderReceiver {
             channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
             // TODO 该消息已经导致异常，重发无意义，自己实现补偿机制
             LOGGER.info("订单取消消息消费异常[{}]",orderId);
-            System.out.println("receiver fail");
+            System.out.println("receiver cancel order fail");
         }
 
     }

@@ -436,6 +436,8 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         portalOrderDao.updateOrderStatus(ids, 4);
         for (OmsOrderDetail timeOutOrder : timeOutOrders) {
             //解除订单商品库存锁定
+            //TODO
+            //解除订单商品库存的redis锁定
             portalOrderDao.releaseSkuStockLock(timeOutOrder.getOrderItemList());
             //修改优惠券使用状态
             updateCouponStatus(timeOutOrder.getCouponId(), timeOutOrder.getMemberId(), 0);
@@ -466,6 +468,8 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
             orderItemExample.createCriteria().andOrderIdEqualTo(orderId);
             List<OmsOrderItem> orderItemList = orderItemMapper.selectByExample(orderItemExample);
             //解除订单商品库存锁定
+            //TODO
+            //解除订单商品库存的redis锁定
             if (!CollectionUtils.isEmpty(orderItemList)) {
                 portalOrderDao.releaseSkuStockLock(orderItemList);
             }
