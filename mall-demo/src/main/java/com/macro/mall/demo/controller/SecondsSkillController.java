@@ -51,7 +51,7 @@ public class SecondsSkillController {
         Long newStock = redisService.decr(key,quantity);
         if (newStock >= 0){
             // 使用异步更新mysql
-            demoSender.send(skuId,quantity);
+            demoSender.send(skuId,quantity,10000L);
             return "购买成功";
         }else {
             //库存不足，超卖，需要把之前减掉的库存加回来
