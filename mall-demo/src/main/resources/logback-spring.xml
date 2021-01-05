@@ -19,7 +19,6 @@
     </appender>
     <root level="INFO">
         <appender-ref ref="LOGSTASH" />
-        <appender-ref ref="CONSOLE" />
     </root>
 
 </configuration>
