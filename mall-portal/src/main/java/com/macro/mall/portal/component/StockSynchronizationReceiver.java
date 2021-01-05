@@ -36,7 +36,7 @@ public class StockSynchronizationReceiver {
                 log.info("库存锁定成功[{}]",sku);
             }
             channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             channel.basicReject(message.getMessageProperties().getDeliveryTag(),false);
             log.info("库存锁定异常[{}]",sku);

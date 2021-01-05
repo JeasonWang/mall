@@ -35,7 +35,7 @@ spring:
         max-concurrency: 3
         retry:
           enabled: true
-          max-attempts: 5
+          max-attempts: 3
           max-interval: 20000   # 重试最大间隔时间
           initial-interval: 2000  # 重试初始间隔时间
           multiplier: 3 # 间隔时间乘子，间隔时间*乘子=下一次的间隔时间，最大不能超过设置的最大间隔时间
@@ -43,7 +43,7 @@ spring:
         acknowledge-mode: manual
 
   redis:
-    host: localhost # Redis服务器地址
+    host: 39.105.6.8 # Redis服务器地址
     database: 0 # Redis数据库索引（默认为0）
     port: 6379 # Redis服务器连接端口
     password: 123456 # Redis服务器连接密码（默认为空）
