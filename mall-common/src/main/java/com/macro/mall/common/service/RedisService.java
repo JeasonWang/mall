@@ -3,6 +3,7 @@ package com.macro.mall.common.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * redis操作Service
@@ -179,4 +180,18 @@ public interface RedisService {
      * 从List结构中移除属性
      */
     Long lRemove(String key, long count, Object value);
+
+    /**
+     * 从List结构中移除属性
+     */
+    Object rPop(String key);
+
+    /**
+     * 移除集合中右边的元素在等待的时间里，如果超过等待的时间仍没有元素则退出。
+     * @param key
+     * @param l
+     * @param milliseconds
+     * @return
+     */
+    Object rPop(String key, long l, TimeUnit milliseconds);
 }
