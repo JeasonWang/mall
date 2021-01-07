@@ -69,7 +69,6 @@ public class SecondsSkillController {
     ReentrantLock lock = new ReentrantLock();
 
     @PostMapping("/buyLock")
-    @Transactional(rollbackFor = Exception.class,isolation = SERIALIZABLE)
     public String buyLock(Integer quantity,Long skuId){
         lock.lock();
         try {
