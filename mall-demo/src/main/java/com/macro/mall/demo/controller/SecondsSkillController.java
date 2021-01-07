@@ -3,12 +3,19 @@ package com.macro.mall.demo.controller;
 import com.macro.mall.common.service.RedisService;
 import com.macro.mall.demo.component.DemoSender;
 import com.macro.mall.mapper.PmsSkuStockMapper;
+import com.macro.mall.model.PmsSkuStock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.locks.ReentrantLock;
+
+import static org.springframework.transaction.annotation.Isolation.REPEATABLE_READ;
+import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 
 /**
  * @Author: jeason
@@ -36,8 +43,8 @@ public class SecondsSkillController {
         redisService.set(key,1000);
     }
 
-    @PostMapping("/buy")
-    public String buy(Integer quantity,Long skuId){
+    @PostMapping("/buyRedis")
+    public String buyRedis(Integer quantity,Long skuId){
         Object stock = redisService.get(key);
         // sku缓存不存在，添加
         if (stock == null){
@@ -58,5 +65,28 @@ public class SecondsSkillController {
             redisService.incr(key,quantity);
             return "商品库存不足";
         }
+    }
+    ReentrantLock lock = new ReentrantLock();
+
+    @PostMapping("/buyLock")
+    @Transactional(rollbackFor = Exception.class,isolation = SERIALIZABLE)
+    public String buyLock(Integer quantity,Long skuId){
+        lock.lock();
+        try {
+            PmsSkuStock skuStock = skuStockMapper.selectByPrimaryKey(skuId);
+            int left = skuStock.getStock() - skuStock.getLockStock();
+            if (left < quantity){
+                return "库存不足";
+            }
+            int s = skuStockMapper.updateLockStock(skuId,quantity);
+            if (s == 1){
+                return "购买成功";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            lock.unlock();
+        }
+        return "购买失败";
     }
 }
