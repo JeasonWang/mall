@@ -55,6 +55,7 @@
         <mall-mail.version>1.0-SNAPSHOT</mall-mail.version>
         <mall-security.version>1.0-SNAPSHOT</mall-security.version>
         <kaptcha.version>2.3.2</kaptcha.version>
+        <bitwalker.version>1.19</bitwalker.version>
     </properties>
 
     <dependencies>
@@ -110,6 +111,12 @@
                 <groupId>com.macro.mall</groupId>
                 <artifactId>mall-security</artifactId>
                 <version>${mall-security.version}</version>
+            </dependency>
+            <!-- 解析客户端操作系统、浏览器等 -->
+            <dependency>
+                <groupId>eu.bitwalker</groupId>
+                <artifactId>UserAgentUtils</artifactId>
+                <version>${bitwalker.version}</version>
             </dependency>
             <!--MyBatis分页插件starter-->
             <dependency>

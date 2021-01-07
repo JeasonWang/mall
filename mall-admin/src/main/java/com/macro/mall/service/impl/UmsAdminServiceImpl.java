@@ -4,13 +4,18 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.bo.AdminUserDetails;
+import com.macro.mall.common.constant.Constants;
 import com.macro.mall.common.exception.ApiException;
 import com.macro.mall.common.exception.Asserts;
+import com.macro.mall.common.ip.AddressUtils;
+import com.macro.mall.common.ip.IpUtils;
+import com.macro.mall.common.manager.AsyncManager;
 import com.macro.mall.common.service.RedisService;
-import com.macro.mall.common.util.RequestUtil;
+import com.macro.mall.common.util.ServletUtils;
 import com.macro.mall.dao.UmsAdminRoleRelationDao;
 import com.macro.mall.dto.UmsAdminParam;
 import com.macro.mall.dto.UpdateAdminPasswordParam;
+import com.macro.mall.factory.AsyncFactory;
 import com.macro.mall.mapper.UmsAdminLoginLogMapper;
 import com.macro.mall.mapper.UmsAdminMapper;
 import com.macro.mall.mapper.UmsAdminRoleRelationMapper;
@@ -18,6 +23,7 @@ import com.macro.mall.model.*;
 import com.macro.mall.security.util.JwtTokenUtil;
 import com.macro.mall.service.UmsAdminCacheService;
 import com.macro.mall.service.UmsAdminService;
+import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -31,10 +37,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -125,7 +128,8 @@ public class UmsAdminServiceImpl implements UmsAdminService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             token = jwtTokenUtil.generateToken(userDetails);
 //            updateLoginTimeByUsername(username);
-            insertLoginLog(username);
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, "user.login.success"));
+            //insertLoginLog(username);
         } catch (AuthenticationException e) {
             LOGGER.warn("登录异常:{}", e.getMessage());
         }
@@ -136,7 +140,8 @@ public class UmsAdminServiceImpl implements UmsAdminService {
      * 添加登录记录
      * @param username 用户名
      */
-    private void insertLoginLog(String username) {
+    @Override
+    public void insertLoginLog(String username) {
         UmsAdmin admin = getAdminByUsername(username);
         if(admin==null) {
             return;
@@ -144,9 +149,11 @@ public class UmsAdminServiceImpl implements UmsAdminService {
         UmsAdminLoginLog loginLog = new UmsAdminLoginLog();
         loginLog.setAdminId(admin.getId());
         loginLog.setCreateTime(new Date());
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-        loginLog.setIp(RequestUtil.getRequestIp(request));
+        String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
+        loginLog.setIp(ip);
+        loginLog.setAddress(AddressUtils.getRealAddressByIP(ip));
+        final UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
+        loginLog.setUserAgent(userAgent.getBrowser().getName());
         loginLogMapper.insert(loginLog);
     }
 

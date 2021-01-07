@@ -8,13 +8,15 @@
 3. 实现微信小程序前端开发，对应连接商城后台接口
 4. 注册域名，申请ssl，微信小程序需要https方式
 5. 使用mq + redis缓存实现高并发秒杀http://www.fecmall.com/topic/648
+6. 使用mq实现削峰降流，实现下单发邮件
+
 
 ###正要做：
 1. 使用elasticsearch7.4实现搜索功能，使用restHighLevel
-2. 使用mq实现削峰降流，实现下单发邮件
+2. 实现主从数据库备份
 3. 使用异步任务，异步日志记录
-5. 尝试使用kafka或rocketmq替换rabbitmq
-6. 实现主从数据库备份
+4. 尝试使用kafka或rocketmq替换rabbitmq
+
 
 
 <p>
