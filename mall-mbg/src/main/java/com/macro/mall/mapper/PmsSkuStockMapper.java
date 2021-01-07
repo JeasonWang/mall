@@ -41,4 +41,12 @@ public interface PmsSkuStockMapper {
      * @return
      */
     int updateLockStock(@Param("productSkuId") Long productSkuId, @Param("quantity")  Integer quantity);
+
+    /**
+     * 锁定库存,悲观锁
+     * @param productSkuId
+     * @param quantity
+     * @return
+     */
+    int updateLockStockSadLock(@Param("productSkuId") Long productSkuId, @Param("quantity")  Integer quantity);
 }

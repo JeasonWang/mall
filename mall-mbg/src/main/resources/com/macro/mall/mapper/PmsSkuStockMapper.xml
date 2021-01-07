@@ -311,6 +311,12 @@
   <update id="updateLockStock">
     update pms_sku_stock
     set lock_stock = #{quantity,jdbcType=INTEGER} + lock_stock
+    where id = #{productSkuId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateLockStockSadLock">
+    update pms_sku_stock
+    set lock_stock = #{quantity,jdbcType=INTEGER} + lock_stock
     where id = #{productSkuId,jdbcType=BIGINT} and stock - lock_stock - #{quantity,jdbcType=INTEGER} >= 0
   </update>
 </mapper>
