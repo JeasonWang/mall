@@ -87,9 +87,4 @@ public interface UmsAdminService {
      */
     UserDetails loadUserByUsername(String username);
 
-    /**
-     * 记录登录日志
-     * @param username
-     */
-    void insertLoginLog(String username);
 }

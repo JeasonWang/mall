@@ -11,6 +11,7 @@ import com.macro.mall.common.ip.AddressUtils;
 import com.macro.mall.common.ip.IpUtils;
 import com.macro.mall.common.manager.AsyncManager;
 import com.macro.mall.common.service.RedisService;
+import com.macro.mall.common.util.RequestUtil;
 import com.macro.mall.common.util.ServletUtils;
 import com.macro.mall.dao.UmsAdminRoleRelationDao;
 import com.macro.mall.dto.UmsAdminParam;
@@ -37,7 +38,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -140,8 +144,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
      * 添加登录记录
      * @param username 用户名
      */
-    @Override
-    public void insertLoginLog(String username) {
+    private void insertLoginLog(String username) {
         UmsAdmin admin = getAdminByUsername(username);
         if(admin==null) {
             return;
