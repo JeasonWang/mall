@@ -1,8 +1,9 @@
+
 spring:
   datasource:
-    url: jdbc:mysql://mianduijifeng.top:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
-    password: wnGZy2rww
+    password: root123
     druid:
       initial-size: 5 #连接池初始化大小
       min-idle: 10 #最小空闲连接数
@@ -13,7 +14,7 @@ spring:
         login-username: druid
         login-password: druid
   redis:
-    host: 39.105.6.8 # Redis服务器地址
+    host: localhost # Redis服务器地址
     database: 0 # Redis数据库索引（默认为0）
     port: 6379 # Redis服务器连接端口
     password: 123456 # Redis服务器连接密码（默认为空）
@@ -40,7 +41,10 @@ logstash:
   host: localhost
 
 qiniu:
-  accessKey: MGS_vEoF1UkrGH0N3JILUokTedZ8TAtAukCGTFdI
-  secretKey: sx60d2BVyWwAJHXJbIGwIyC9E2HOOmFDql7gylcr
-  bucket: jeasonfile
-  path: http://img.mianduijifeng.top
+  accessKey: 11
+  secretKey: 11
+  bucket: 11
+  path: 11
+
+server:
+  port: 8080
