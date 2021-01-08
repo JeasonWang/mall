@@ -1,11 +1,15 @@
 package com.macro.mall.demo.controller;
 
+import com.macro.mall.common.exception.ApiException;
 import com.macro.mall.common.service.RedisService;
 import com.macro.mall.demo.component.DemoSender;
 import com.macro.mall.mapper.PmsSkuStockMapper;
 import com.macro.mall.model.PmsSkuStock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,6 +72,8 @@ public class SecondsSkillController {
     }
     ReentrantLock lock = new ReentrantLock();
 
+    @Autowired
+    private RetryService retryService;
     @PostMapping("/buyLock")
     public String buyLock(Integer quantity,Long skuId){
         lock.lock();
@@ -79,6 +85,7 @@ public class SecondsSkillController {
             }
             int s = skuStockMapper.updateLockStock(skuId,quantity);
             if (s == 1){
+                retryService.callback("购买成功",quantity);
                 return "购买成功";
             }
         }catch (Exception e){
@@ -88,4 +95,6 @@ public class SecondsSkillController {
         }
         return "购买失败";
     }
+
+
 }
